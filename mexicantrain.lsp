@@ -41,15 +41,18 @@
 
 	
 	;roundNumber computerScore computerHand computerTrain humanScore humanHand humanTrain mexicanTrain boneyard nextPlayer
-	(startRound 1 0 () () 0 () () () (newBoneyard) (coinToss) )
+	(startRound 1 0 () () 0 () () () (newBoneyard) () )
 )
 
 (defun startRound(roundNumber computerScore computerHand computerTrain humanScore humanHand humanTrain mexicanTrain boneyard nextPlayer)
+	(format "Starting Round ~d" roundNumber) (terpri)
 	(cond
 		( (< (getListLength computerHand) 16)
 			(startRound roundNumber computerScore (addTileToHand '"Computer" computerHand boneyard) computerTrain humanScore humanHand humanTrain mexicanTrain (rest boneyard) nextPlayer) )
 		( (< (getListLength humanHand) 16)
 			(startRound roundNumber computerScore computerHand computerTrain humanScore (addTileToHand '"Human" humanHand boneyard) humanTrain mexicanTrain (rest boneyard) nextPlayer) )
+		( (null nextPlayer)
+			(startRound roundNumber computerScore computerHand computerTrain humanScore humanHand humanTrain mexicanTrain boneyard (coinToss) ) )
 		( t
 			(playRound roundNumber computerScore computerHand computerTrain humanScore humanHand humanTrain mexicanTrain boneyard nextPlayer) )
 	)
@@ -81,17 +84,16 @@
 )
 
 (defun coinToss ()
-	( determineWinnerFromFlip (random 2) )
-)
-
-(defun determineWinnerFromFlip(randomNumber)
+	(princ "===========================================") (terpri)
+	(getValidNumber 1 2 "Human player call (1) Heads or (2) Tails")
 	(cond
-		( (= randomNumber 0)
-			'("Computer") )
-		( (= randomNumber 1)
-			'("Human")  )
+		( (= (random 2) 0)
+			(princ "Computer wins Coin Toss!") (terpri)
+			"Computer" )
 		( t
-			(princ "Fatal Error in determineWinnerFromFlip") )
+			(princ "Human wins Coin Toss!") (terpri)
+			"Human"  )
+
 	)
 )
 

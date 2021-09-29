@@ -21,15 +21,13 @@
 	)
 )
 
-;Thanks to Peter Seibel for the nifty list formatting
 (defun printList (label list)
 	(cond
 		( (null list)
-			() )
+			(format t "~d" label) (terpri) )
 		( t
-			() )
-	)
-	(format t "~d~d" label list) (terpri)
+			(format t "~d~d" label list) (terpri) )
+	)	
 )
 
 (defun getNth(n list)
@@ -54,6 +52,7 @@
 	)
 )
 
+;get last element of a list
 (defun getLast(list)
 	(cond
 		( (= (getListLength list) 1) 
@@ -63,6 +62,7 @@
 	)
 )
 
+;returns t or nil if the list contains the item
 (defun listContains(list item)
 	(cond
 		( (null list)
