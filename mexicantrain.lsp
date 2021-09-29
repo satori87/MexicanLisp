@@ -38,15 +38,14 @@
 (defun newGame()
 	(princ "Starting New Game") (terpri)
 	;Round arguments are in same order as serialization file
-
-	
 	;roundNumber computerScore computerHand computerTrain humanScore humanHand humanTrain mexicanTrain boneyard nextPlayer
-	(startRound 1 0 () () 0 () () () (newBoneyard) () )
+	(startRound 1 0 () () 0 () () () () () )
 )
 
 (defun startRound(roundNumber computerScore computerHand computerTrain humanScore humanHand humanTrain mexicanTrain boneyard nextPlayer)
-	(format "Starting Round ~d" roundNumber) (terpri)
 	(cond
+		( (null boneyard)
+			(startRound roundNumber computerScore computerHand computerTrain humanScore humanHand humanTrain mexicanTrain (newBoneyard) nextPlayer) )
 		( (< (getListLength computerHand) 16)
 			(startRound roundNumber computerScore (addTileToHand '"Computer" computerHand boneyard) computerTrain humanScore humanHand humanTrain mexicanTrain (rest boneyard) nextPlayer) )
 		( (< (getListLength humanHand) 16)
@@ -54,6 +53,7 @@
 		( (null nextPlayer)
 			(startRound roundNumber computerScore computerHand computerTrain humanScore humanHand humanTrain mexicanTrain boneyard (coinToss) ) )
 		( t
+			(format t '"Starting Round ~d" roundNumber) (terpri)
 			(playRound roundNumber computerScore computerHand computerTrain humanScore humanHand humanTrain mexicanTrain boneyard nextPlayer) )
 	)
 )
