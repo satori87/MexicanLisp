@@ -38,3 +38,11 @@
 (defun setNextPlayer(game nextPlayer)
 	(setNth game 10 nextPlayer)
 )
+
+(defun setComputerPassed(game computerPassed)
+	(setNth game 11 (list computerPassed (getNth 2 (getNth 11 game) ) ) )
+)
+
+(defun setHumanPassed(game humanPassed)
+	(setNth game 11 (list (getNth 1 (getNth 11 game) ) humanPassed ) )
+)

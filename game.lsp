@@ -28,11 +28,11 @@
 (defun loadSerializedGame (menuChoice)
 	(cond
 		( (= menuChoice 1)
-			(serializedGame1) )
+			(append (serializedGame1) (list () ) ) )
 		( (= menuChoice 2)
-			(serializedGame2) )
+			(append (serializedGame2) (list () ) ) )
 		( (= menuChoice 3)
-			(serializedGame3) )
+			(append (serializedGame3) (list () ) ) )
 	)
 )
 
@@ -56,9 +56,9 @@
 (defun nextRound (scores game)
 	;return a new round with 1 higher round number, empty trains, empty hands, empty boneyard
 	;set players passed to false here as well, when thats implemented
-	;Round arguments are in same order as serialization file	
-	;roundNumber computerScore computerHand computerTrain humanScore humanHand humanTrain mexicanTrain boneyard nextPlayer
-	(startRound (list (+ (getRoundNumber game) 1) (getNth 1 scores) () () (getNth 2 scores) () () () () () ) )
+	;Round arguments are in same order as serialization file, plus 1 more field to hold who has passed	
+	;roundNumber computerScore computerHand computerTrain humanScore humanHand humanTrain mexicanTrain boneyard nextPlayer passed
+	(startRound (list (+ (getRoundNumber game) 1) (getNth 1 scores) () () (getNth 2 scores) () () () () () () ) )
 )
 
 

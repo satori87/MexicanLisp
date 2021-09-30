@@ -38,6 +38,14 @@
 	(getNth 10 game)
 )
 
+(defun getComputerPassed(game)
+	(getNth 1 (getNth 11 game) )
+)
+
+(defun getHumanPassed(game)
+	(getNth 2 (getNth 11 game) )
+)
+
 (defun serializedGame1()
 	'(
 		1

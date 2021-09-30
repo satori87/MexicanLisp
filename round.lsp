@@ -1,5 +1,5 @@
 (defun startFirstRound ()
-	(startRound (list 1 0 () () 0 () () () () () ) )
+	(startRound (list 1 0 () () 0 () () () () () () ) )
 )
 
 (defun startRound (game)
@@ -13,7 +13,7 @@
 		( (null (getNextPlayer game) )
 			(startRound  (setNextPlayer game (determineFirstPlayer (getComputerScore game) (getHumanScore game) ) ) ) )
 		( t
-			(format t '"Starting Round ~d" (getRoundNumber game) ) (terpri)
+			(format t '"Starting Round ~d. ~d goes first" (getRoundNumber game) (getNextPlayer game) ) (terpri)
 			game )
 	)
 )
@@ -25,7 +25,7 @@
 		( (< computerScore humanScore )
 			'"Computer" )
 		( (> computerScore humanScore )
-			'"Human" ) 
+			'"Human" )
 	)
 )
 
