@@ -1,9 +1,9 @@
-(defun initGame()
+(defun initGame ()
 	(displayIntroMenu)
 	(processIntroMenuChoice (getValidNumber 1 3 "Make your Selection") ) 
 )
 
-(defun displayIntroMenu()
+(defun displayIntroMenu ()
 	(terpri) (princ "Welcome to Mexican Train") (terpri)
 	(princ "(1) Resume previous game") (terpri)
 	(princ "(2) New game") (terpri)
@@ -21,7 +21,7 @@
 	)
 )
 
-(defun resumeGame()
+(defun resumeGame ()
 	(playRound (loadSerializedGame (getValidNumber 1 3 "Choose a game (1) (2) or (3)") ) )
 )
 
@@ -36,7 +36,20 @@
 	)
 )
 
-(defun newGame()
+(defun askToKeepPlaying (game)
+	(processKeepPlayingPrompt game (getValidNumber 1 2 "Do you wish to keep playing? (1) Yes (2) No") )
+)
+
+(defun processKeepPlayingPrompt (game choice)
+	(cond
+		( (equal choice 1)
+			(playRound (startRound (setRoundNumber game (+ (getRoundNumber game) 1) ) ) ) )
+		( (equal choice 2)
+			(quit) )
+	)
+)
+
+(defun newGame ()
 	(princ "Starting New Game") (terpri)
 	;Round arguments are in same order as serialization file
 	;roundNumber computerScore computerHand computerTrain humanScore humanHand humanTrain mexicanTrain boneyard nextPlayer

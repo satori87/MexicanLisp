@@ -1,8 +1,8 @@
-(defun startFirstRound()
+(defun startFirstRound ()
 	(startRound (list 1 0 () () 0 () () () () () ) )
 )
 
-(defun startRound(game)
+(defun startRound (game)
 	(cond
 		( (null (getBoneyard game) )
 			(startRound (setBoneyard game (newBoneyard) ) ) )
@@ -22,17 +22,44 @@
 	(printRound game)
 	(cond 
 		( (null (getHumanHand game) )
-			(endRound game) )
+			(playRound (endRound game) ) )
 		( (null (getComputerHand game) )
-			(endRound game) )
+			(playRound (endRound game) )
+		;( () () ) ;Pass/boneyard based victory condition!
 		( (equal (getNextPlayer game) "Computer")
-			(takeComputerTurn game) )
+			(playRound (takeComputerTurn game) )
 		( (equal (getNextPlayer game) "Human")
-			(takeHumanTurn game) )
-		( (null (getBoneyard game) )
-			() )
-		;( t
-			;(playRound game) )
+			(playRound (takeHumanTurn game) )
+	)
+
+)
+
+(defun endRound (game)
+	(princ "Round ~d over! Tallying scores" (getRoundNumber game) ) 
+	(printEndOfRound (tallyScores game) )
+)
+
+(defun printEndOfRound (game)
+	(princ "END END END") (terpri)
+	(printRound game)
+)
+
+(defun tallyScores (game)
+	(let (
+		(computerHand (getComputerHand game) )
+		(humanHand (getHumanHand game) ) )
+		(cond
+			( (equal (null computerHand ) nil )
+				(tallyScores 
+					(setComputerHand
+						(setComputerScore game
+						(+ (getComputerScore game) (getTileValue (first computerHand ) ) ) )
+					(rest computerHand ) )
+				)
+			)
+			( t
+				game )
+		)
 	)
 )
 
@@ -51,18 +78,18 @@
 	(printTurn (getNextPlayer game) )
 )
 
-(defun printPlayerTrains(computerTrain engine humanTrain)
+(defun printPlayerTrains (computerTrain engine humanTrain)
 	(printList '"Player Trains  :" (reverseList computerTrain) )
 	(format t '" ~d "  engine)
 	(printListLn '"" humanTrain)
 )
 
-(defun printSeparatePlayerTrains(computerTrain engine humanTrain)
+(defun printSeparatePlayerTrains (computerTrain engine humanTrain)
 	(printListLn '"Computer Train : " computerTrain )
 	(printListLn '"Human Train    : " humanTrain )
 )
 
-(defun getEngine(roundNumber)
+(defun getEngine (roundNumber)
 	(let (
 		( engineHalf (- 9 (- (mod roundNumber 10) 1)) ) )
 		(list engineHalf engineHalf)

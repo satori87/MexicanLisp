@@ -21,24 +21,6 @@
 	)
 )
 
-(defun loadFile(filename)
-	(load filename :verbose t)
-)
-
-(defun getFilename()
-	(princ "Enter filename of game to load: ") (terpri)
-	(getString (read) )
-)
-
-(defun getString(input)
-	(cond
-		( (null input )
-			(getSring input) )	
-		( t
-			'input )
-	)
-)
-
 (defun printListLn (label lst)
 	(cond
 		( (null lst)
