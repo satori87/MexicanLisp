@@ -11,31 +11,44 @@
 		( (< (getListLength (getHumanHand game) ) 16)
 			(startRound (setBoneyard (setHumanHand game (addTileToHand '"Human" (getHumanHand game) (getBoneyard game) ) ) (rest (getBoneyard game) ) ) ) )
 		( (null (getNextPlayer game) )
-			(startRound  (setNextPlayer game (coinToss) ) ) )
+			(startRound  (setNextPlayer game (determineFirstPlayer (getComputerScore game) (getHumanScore game) ) ) ) )
 		( t
 			(format t '"Starting Round ~d" (getRoundNumber game) ) (terpri)
 			game )
 	)
 )
 
+(defun determineFirstPlayer (computerScore humanScore)
+	(cond
+		( (= computerScore humanScore )
+			(coinToss) )
+		( (> computerScore humanScore )
+			'"Computer" )
+		( (< computerScore humanScore )
+			'"Human" ) 
+	)
+)
+
+(defun isRoundOver (game)
+	t
+)
+
 (defun playRound (game)
 	(printRound game)
 	(cond 
-		( (null (getHumanHand game) )
-			(playRound (endRound game) ) )
-		( (null (getComputerHand game) )
-			(playRound (endRound game) )
-		;( () () ) ;Pass/boneyard based victory condition!
-		( (equal (getNextPlayer game) "Computer")
-			(playRound (takeComputerTurn game) )
-		( (equal (getNextPlayer game) "Human")
-			(playRound (takeHumanTurn game) )
+		( (null (isRoundOver game) )
+			(cond
+				( (equal (getNextPlayer game) "Computer")
+					(playRound (takeComputerTurn game) ) )
+				( (equal (getNextPlayer game) "Human")
+					(playRound (takeHumanTurn game) ) )
+			) )
 	)
-
+	(endRound game)
 )
 
 (defun endRound (game)
-	(princ "Round ~d over! Tallying scores" (getRoundNumber game) ) 
+	(format t "Round ~d over! Tallying scores" (getRoundNumber game) ) 
 	(printEndOfRound (tallyScores game) )
 )
 

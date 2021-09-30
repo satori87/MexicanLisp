@@ -22,7 +22,7 @@
 )
 
 (defun resumeGame ()
-	(playRound (loadSerializedGame (getValidNumber 1 3 "Choose a game (1) (2) or (3)") ) )
+	(playGame (loadSerializedGame (getValidNumber 1 3 "Choose a game (1) (2) or (3)") ) )
 )
 
 (defun loadSerializedGame (menuChoice)
@@ -51,7 +51,31 @@
 
 (defun newGame ()
 	(princ "Starting New Game") (terpri)
-	;Round arguments are in same order as serialization file
-	;roundNumber computerScore computerHand computerTrain humanScore humanHand humanTrain mexicanTrain boneyard nextPlayer
-	(playRound (startFirstRound) )
+	(playGame (startFirstRound) )
 )
+
+(defun playGame (game)
+	(playRound game)
+	(cond
+		( (equal (askToKeepPlaying) 2)
+			(quit) )
+		( t
+			(playGame (nextRound game) ) )
+	)
+)
+
+(defun nextRound (game)
+	;return a new round with 1 higher round number, empty trains, empty hands, empty boneyard
+	;set players passed to false here as well, when thats implemented
+	;Round arguments are in same order as serialization file	
+	;roundNumber computerScore computerHand computerTrain humanScore humanHand humanTrain mexicanTrain boneyard nextPlayer
+	(startRound (list (+ (getRoundNumber game) 1) (getComputerScore game) () () (getHumanScore game) () () () () () ) )
+)
+
+
+
+
+
+
+
+

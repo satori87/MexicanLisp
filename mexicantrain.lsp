@@ -14,6 +14,8 @@
 	(load "C:/lisp/tile.lsp")
 	(load "C:/lisp/human.lsp")
 	(load "C:/lisp/computer.lsp")
+	(load "C:/lisp/player.lsp")
+
 
 )
 
