@@ -20,6 +20,20 @@
 
 (defun playRound (game)
 	(printRound game)
+	(cond 
+		( (null (getHumanHand game) )
+			(endRound game) )
+		( (null (getComputerHand game) )
+			(endRound game) )
+		( (equal (getNextPlayer game) "Computer")
+			(takeComputerTurn game) )
+		( (equal (getNextPlayer game) "Human")
+			(takeHumanTurn game) )
+		( (null (getBoneyard game) )
+			() )
+		;( t
+			;(playRound game) )
+	)
 )
 
 (defun printRound (game)
@@ -43,9 +57,9 @@
 	(printListLn '"" humanTrain)
 )
 
-(defunprintSeparatePlayerTrains(computerTrain engine humanTrain)
-	(printListLn '"Computer Train : " (cons engine (computerTrain game) ) )
-	(printListLn '"Human Train    : " (cons engine (humanTrain game) ) )
+(defun printSeparatePlayerTrains(computerTrain engine humanTrain)
+	(printListLn '"Computer Train : " computerTrain )
+	(printListLn '"Human Train    : " humanTrain )
 )
 
 (defun getEngine(roundNumber)
