@@ -3,7 +3,7 @@
 	(setNth game 1 roundNumber)
 )
 
-(defun setSetComputerScore(game computerScore)
+(defun setComputerScore(game computerScore)
 	(setNth game 2 computerScore)
 )
 

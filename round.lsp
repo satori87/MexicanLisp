@@ -22,15 +22,16 @@
 	(cond
 		( (= computerScore humanScore )
 			(coinToss) )
-		( (> computerScore humanScore )
-			'"Computer" )
 		( (< computerScore humanScore )
+			'"Computer" )
+		( (> computerScore humanScore )
 			'"Human" ) 
 	)
 )
 
 (defun isRoundOver (game)
 	t
+	;either hand is empty or (boneyard is empty + both players passed)
 )
 
 (defun playRound (game)
@@ -43,36 +44,29 @@
 				( (equal (getNextPlayer game) "Human")
 					(playRound (takeHumanTurn game) ) )
 			) )
+		( t
+			(endRound game) )
 	)
-	(endRound game)
 )
 
 (defun endRound (game)
-	(format t "Round ~d over! Tallying scores" (getRoundNumber game) ) 
-	(printEndOfRound (tallyScores game) )
-)
-
-(defun printEndOfRound (game)
-	(princ "END END END") (terpri)
-	(printRound game)
+	(format t "Round ~d over! Tallying scores" (getRoundNumber game) ) (terpri)
+	(tallyScores game)
 )
 
 (defun tallyScores (game)
-	(let (
-		(computerHand (getComputerHand game) )
-		(humanHand (getHumanHand game) ) )
-		(cond
-			( (equal (null computerHand ) nil )
-				(tallyScores 
-					(setComputerHand
-						(setComputerScore game
-						(+ (getComputerScore game) (getTileValue (first computerHand ) ) ) )
-					(rest computerHand ) )
-				)
-			)
-			( t
-				game )
-		)
+	(let* (
+		(computerPts (tallyHand (getComputerHand game) ) )
+		(humanPts (tallyHand (getHumanHand game) ) )
+		(computerScore (+ (getComputerScore game) computerPts) )
+		(humanScore (+ (getHumanScore game) humanPts) ))
+
+		(format t "Computer adds ~d to its score for a total of ~d" computerPts computerScore) (terpri)
+		(format t "Human adds ~d to its score for a total of ~d" humanPts humanScore) (terpri)
+
+		;return the scores back to endRound, back through every round that was played
+		;and back to playGame, which handles the rest
+		(list computerScore humanScore)
 	)
 )
 

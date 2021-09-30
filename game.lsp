@@ -36,40 +36,29 @@
 	)
 )
 
-(defun askToKeepPlaying (game)
-	(processKeepPlayingPrompt game (getValidNumber 1 2 "Do you wish to keep playing? (1) Yes (2) No") )
-)
-
-(defun processKeepPlayingPrompt (game choice)
-	(cond
-		( (equal choice 1)
-			(playRound (startRound (setRoundNumber game (+ (getRoundNumber game) 1) ) ) ) )
-		( (equal choice 2)
-			(quit) )
-	)
-)
-
 (defun newGame ()
 	(princ "Starting New Game") (terpri)
 	(playGame (startFirstRound) )
 )
 
 (defun playGame (game)
-	(playRound game)
-	(cond
-		( (equal (askToKeepPlaying) 2)
-			(quit) )
-		( t
-			(playGame (nextRound game) ) )
+	(let(
+		( scores (playRound game) ) )	
+		(cond
+			( (equal (getValidNumber 1 2 "Do you wish to keep playing? (1) Yes (2) No") 2)
+				() )
+			( t
+				(playGame (nextRound scores game) ) )
+		)
 	)
 )
 
-(defun nextRound (game)
+(defun nextRound (scores game)
 	;return a new round with 1 higher round number, empty trains, empty hands, empty boneyard
 	;set players passed to false here as well, when thats implemented
 	;Round arguments are in same order as serialization file	
 	;roundNumber computerScore computerHand computerTrain humanScore humanHand humanTrain mexicanTrain boneyard nextPlayer
-	(startRound (list (+ (getRoundNumber game) 1) (getComputerScore game) () () (getHumanScore game) () () () () () ) )
+	(startRound (list (+ (getRoundNumber game) 1) (getNth 1 scores) () () (getNth 2 scores) () () () () () ) )
 )
 
 
