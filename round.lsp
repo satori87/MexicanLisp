@@ -3,9 +3,9 @@
 		( (null (getBoneyard game) )
 			(startRound (setBoneyard game (newBoneyard) ) ) )
 		( (< (getListLength (getComputerHand game) ) 16)
-			(startRound (setBoneyard (setComputerHand game (addTileToHand '"Computer" (getComputerHand game) (getBoneyard game) ) ) (rest (getBoneyard game) ) ) ) )
+			(startRound (setBoneyard (setComputerHand game (addTileToHand '"COMPUTER" (getComputerHand game) (getBoneyard game) ) ) (rest (getBoneyard game) ) ) ) )
 		( (< (getListLength (getHumanHand game) ) 16)
-			(startRound (setBoneyard (setHumanHand game (addTileToHand '"Human" (getHumanHand game) (getBoneyard game) ) ) (rest (getBoneyard game) ) ) ) )
+			(startRound (setBoneyard (setHumanHand game (addTileToHand '"HUMAN" (getHumanHand game) (getBoneyard game) ) ) (rest (getBoneyard game) ) ) ) )
 		( (null (getNextPlayer game) )
 			(startRound  (setNextPlayer game (determineFirstPlayer (getComputerScore game) (getHumanScore game) ) ) ) )
 		( t
@@ -17,21 +17,20 @@
 (defun playRound (game)
 	(printRound game)
 	(cond 
-		( (null (isRoundOver game) )
-			(cond
-				( (equal (getNextPlayer game) "Computer")
-					(playRound (takeComputerTurn game) ) )
-				( (equal (getNextPlayer game) "Human")
-					(playRound (takeHumanTurn game) ) )
-			) )
-		( t
+		( (isRoundOver game)
 			(endRound game) )
+		( (equal (getNextPlayer game) "COMPUTER")
+			(playRound (takeComputerTurn game) ) )
+		( (equal (getNextPlayer game) "HUMAN")
+			(playRound (takeHumanTurn game) ) )
+		( t
+			(format t "uhoh ~d" (getNextPlayer game) ) (terpri) game )
 	)
 )
 
 (defun isRoundOver (game)
-	t
 	;either hand is empty or (boneyard is empty + both players passed)
+	nil
 )
 
 (defun endRound (game)
@@ -43,8 +42,9 @@
 	(format t "Round ~d | Computer Score: ~d | Human Score: ~d" (getRoundNumber game) (getComputerScore game) (getHumanScore game) ) (terpri)
 	(printListLn '"Computer Hand  : " (getComputerHand game) ) 
 	(printListLn '"Human Hand     : " (getHumanHand game) )
-	(printListLn '"Computer Train : " (getComputerTrain game) )
-	(printListLn '"Human Train    : " (getHumanTrain game) )
+	(printList '"Player Trains  : " (getComputerTrain game) )
+	(format t " ~d " (getEngine (getRoundNumber game) ) )
+	(printListLn '"" (getHumanTrain game) )
 	(printListLn '"Mexican Train  : " (getMexicanTrain game) )
 	(format t   '"Boneyard (~2,'0d)  :" (getListLength (getBoneyard game) ) )
 	(printTop (getBoneyard game) )
@@ -63,9 +63,9 @@
 		( (= computerScore humanScore )
 			(coinToss) )
 		( (< computerScore humanScore )
-			'"Computer" )
+			'"COMPUTER" )
 		( (> computerScore humanScore )
-			'"Human" )
+			'"HUMAN" )
 	)
 )
 

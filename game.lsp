@@ -25,17 +25,6 @@
 	(playGame (loadGame) )
 )
 
-(defun loadSerializedGame (menuChoice)
-	(cond
-		( (= menuChoice 1)
-			(append (serializedGame1) (list () ) ) )
-		( (= menuChoice 2)
-			(append (serializedGame2) (list () ) ) )
-		( (= menuChoice 3)
-			(append (serializedGame3) (list () ) ) )
-	)
-)
-
 (defun newGame ()
 	(princ "Starting New Game") (terpri)
 	(playGame (startRound (list 1 0 () () 0 () () () () () () ) ) )

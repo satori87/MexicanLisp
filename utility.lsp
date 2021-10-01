@@ -58,7 +58,7 @@
 	)
 )
 
-(defun removeFromList(lst item)
+(defun remList(lst item)
 	(cond
 		( (null lst)
 			() )

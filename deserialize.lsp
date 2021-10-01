@@ -46,6 +46,20 @@
 	(getNth 2 (getNth 11 game) )
 )
 
-(defun loadGame (game)
-
+(defun loadGame ()
+	(princ "Enter a valid filename") (terpri)
+	(let* (
+		(input (read-line) )
+		(ins (open (make-pathname :directory "lisp" :name input) ) )
+		)
+		(cond 
+			( (null ins)
+				(loadGame) )
+			( t
+				(append (read ins) (list () ) ) )
+		)
+	)
 )
+
+
+
