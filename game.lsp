@@ -22,7 +22,7 @@
 )
 
 (defun resumeGame ()
-	(playGame (loadSerializedGame (getValidNumber 1 3 "Choose a game (1) (2) or (3)") ) )
+	(playGame (loadGame) )
 )
 
 (defun loadSerializedGame (menuChoice)
@@ -38,12 +38,12 @@
 
 (defun newGame ()
 	(princ "Starting New Game") (terpri)
-	(playGame (startFirstRound) )
+	(playGame (startRound (list 1 0 () () 0 () () () () () () ) ) )
 )
 
 (defun playGame (game)
 	(let(
-		( scores (playRound game) ) )	
+		( scores (tallyScores (playRound game) ) ) )
 		(cond
 			( (equal (getValidNumber 1 2 "Do you wish to keep playing? (1) Yes (2) No") 2)
 				() )
@@ -62,9 +62,18 @@
 )
 
 
+(defun tallyScores (game)
+	(let* (
+		(computerPts (tallyHand (getComputerHand game) ) )
+		(humanPts (tallyHand (getHumanHand game) ) )
+		(computerScore (+ (getComputerScore game) computerPts) )
+		(humanScore (+ (getHumanScore game) humanPts) ))
 
+		(format t "Computer adds ~d to its score for a total of ~d" computerPts computerScore) (terpri)
+		(format t "Human adds ~d to its score for a total of ~d" humanPts humanScore) (terpri)
 
-
-
-
-
+		;return the scores back to endRound, back through every round that was played
+		;and back to playGame, which handles the rest
+		(list computerScore humanScore)
+	)
+)

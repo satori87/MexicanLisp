@@ -1,7 +1,3 @@
-(defun startFirstRound ()
-	(startRound (list 1 0 () () 0 () () () () () () ) )
-)
-
 (defun startRound (game)
 	(cond
 		( (null (getBoneyard game) )
@@ -16,22 +12,6 @@
 			(format t '"Starting Round ~d. ~d goes first" (getRoundNumber game) (getNextPlayer game) ) (terpri)
 			game )
 	)
-)
-
-(defun determineFirstPlayer (computerScore humanScore)
-	(cond
-		( (= computerScore humanScore )
-			(coinToss) )
-		( (< computerScore humanScore )
-			'"Computer" )
-		( (> computerScore humanScore )
-			'"Human" )
-	)
-)
-
-(defun isRoundOver (game)
-	t
-	;either hand is empty or (boneyard is empty + both players passed)
 )
 
 (defun playRound (game)
@@ -49,51 +29,26 @@
 	)
 )
 
-(defun endRound (game)
-	(format t "Round ~d over! Tallying scores" (getRoundNumber game) ) (terpri)
-	(tallyScores game)
+(defun isRoundOver (game)
+	t
+	;either hand is empty or (boneyard is empty + both players passed)
 )
 
-(defun tallyScores (game)
-	(let* (
-		(computerPts (tallyHand (getComputerHand game) ) )
-		(humanPts (tallyHand (getHumanHand game) ) )
-		(computerScore (+ (getComputerScore game) computerPts) )
-		(humanScore (+ (getHumanScore game) humanPts) ))
-
-		(format t "Computer adds ~d to its score for a total of ~d" computerPts computerScore) (terpri)
-		(format t "Human adds ~d to its score for a total of ~d" humanPts humanScore) (terpri)
-
-		;return the scores back to endRound, back through every round that was played
-		;and back to playGame, which handles the rest
-		(list computerScore humanScore)
-	)
+(defun endRound (game)
+	(format t "Round ~d over! Tallying scores" (getRoundNumber game) ) (terpri)
+	game
 )
 
 (defun printRound (game)
 	(format t "Round ~d | Computer Score: ~d | Human Score: ~d" (getRoundNumber game) (getComputerScore game) (getHumanScore game) ) (terpri)
 	(printListLn '"Computer Hand  : " (getComputerHand game) ) 
 	(printListLn '"Human Hand     : " (getHumanHand game) )
-
-	;Consider asking professor if its ok to just keep them separate
-	;(printPlayerTrains (getComputerTrain game) (getEngine (getRoundNumber game) ) (getHumanTrain game) )
-	(printSeparatePlayerTrains (getComputerTrain game) (getEngine (getRoundNumber game) ) (getHumanTrain game) )
-	
+	(printListLn '"Computer Train : " (getComputerTrain game) )
+	(printListLn '"Human Train    : " (getHumanTrain game) )
 	(printListLn '"Mexican Train  : " (getMexicanTrain game) )
 	(format t   '"Boneyard (~2,'0d)  :" (getListLength (getBoneyard game) ) )
 	(printTop (getBoneyard game) )
-	(printTurn (getNextPlayer game) )
-)
-
-(defun printPlayerTrains (computerTrain engine humanTrain)
-	(printList '"Player Trains  :" (reverseList computerTrain) )
-	(format t '" ~d "  engine)
-	(printListLn '"" humanTrain)
-)
-
-(defun printSeparatePlayerTrains (computerTrain engine humanTrain)
-	(printListLn '"Computer Train : " computerTrain )
-	(printListLn '"Human Train    : " humanTrain )
+	(format t '"It is ~d's turn" (getNextPlayer game) ) (terpri)
 )
 
 (defun getEngine (roundNumber)
@@ -102,13 +57,19 @@
 		(list engineHalf engineHalf)
 	)
 )
-;
-(defun printTurn(nextPlayer)
-	(format t '"It is ~d's turn" nextPlayer) (terpri)
+
+(defun determineFirstPlayer (computerScore humanScore)
+	(cond
+		( (= computerScore humanScore )
+			(coinToss) )
+		( (< computerScore humanScore )
+			'"Computer" )
+		( (> computerScore humanScore )
+			'"Human" )
+	)
 )
 
 (defun coinToss ()
-	(princ "===========================================") (terpri)
 	(getValidNumber 1 2 "Human player call (1) Heads or (2) Tails")
 	(cond
 		( (= (random 2) 0)

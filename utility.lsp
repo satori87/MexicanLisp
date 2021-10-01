@@ -69,12 +69,12 @@
 	)
 )
 
-(defun setNth(lst n item)
+(defun setNth(n lst item)
 	(cond
 		( (<= n 1)
 			(cons item (rest lst) ) )
 		( t
-			(cons (first lst) (setNth (rest lst) (- n 1) item ) ) )
+			(cons (first lst) (setNth (- n 1) (rest lst) item ) ) )
 	)
 )
 
