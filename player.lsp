@@ -1,9 +1,9 @@
 (defun endTurn (game)
 	(cond
-		( (equal (getNextPlayer game) "COMPUTER" )
-			(setNextPlayer game "HUMAN") )
-		( (equal (getNextPlayer game) "HUMAN" )
-			(setNextPlayer game "COMPUTER") )
+		( (string= (getNextPlayer game) '"Computer" )
+			(setNextPlayer game "Human") )
+		( (string= (getNextPlayer game) '"Human" )
+			(setNextPlayer game "Computer") )
 	)
 )
 

@@ -19,12 +19,12 @@
 	(cond 
 		( (isRoundOver game)
 			(endRound game) )
-		( (equal (getNextPlayer game) "COMPUTER")
-			(playRound (takeComputerTurn game) ) )
-		( (equal (getNextPlayer game) "HUMAN")
+		( (string= (getNextPlayer game) '"Computer" )
+			(playRound (takeComputerTurn game) ) ) 
+		( (string= (getNextPlayer game) '"Human")
 			(playRound (takeHumanTurn game) ) )
 		( t
-			(format t "uhoh ~d" (getNextPlayer game) ) (terpri) game )
+			() )
 	)
 )
 
@@ -63,9 +63,9 @@
 		( (= computerScore humanScore )
 			(coinToss) )
 		( (< computerScore humanScore )
-			'"COMPUTER" )
+			"Computer" )
 		( (> computerScore humanScore )
-			'"HUMAN" )
+			"Human" )
 	)
 )
 
