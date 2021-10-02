@@ -1,10 +1,10 @@
 (defun endTurn (game)
 	(cond
-		( (string= (getNextPlayer game) 'Computer)
+		( (equal (getNextPlayer game) 'Computer)
 			(princ "***Computer Ends Turn. Human Starts Turn***")
 			(terpri)
 			(setNextPlayer game 'Human) )
-		( (string= (getNextPlayer game) 'Human)
+		( (equal (getNextPlayer game) 'Human)
 			(princ "***Human Ends Turn. Computer Starts Turn***")
 			(terpri)
 			(setNextPlayer game 'Computer) )
@@ -30,5 +30,5 @@
 )
 
 (defun hasValidMove (game hand validTrains)
-
+	
 )

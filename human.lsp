@@ -34,8 +34,9 @@
 						(makeHumanMoves alteredGame validTrains (+ tilesPlayed 1) ) )
 					( t  ; otherwise just ruin the altered game object
 						alteredGame )
-				)				
+				)			
 			)
+		)
 	)
 )
 
