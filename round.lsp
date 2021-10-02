@@ -19,12 +19,12 @@
 	(cond 
 		( (isRoundOver game)
 			(endRound game) )
-		( (string= (getNextPlayer game) '"Computer" )
+		( (equal (getNextPlayer game ) 'Computer )
 			(playRound (takeComputerTurn game) ) ) 
-		( (string= (getNextPlayer game) '"Human")
+		( (equal (getNextPlayer game) 'Human )
 			(playRound (takeHumanTurn game) ) )
 		( t
-			() )
+			(princ "Fatal Error") (quit) )
 	)
 )
 
@@ -63,9 +63,9 @@
 		( (= computerScore humanScore )
 			(coinToss) )
 		( (< computerScore humanScore )
-			"Computer" )
+			'Computer )
 		( (> computerScore humanScore )
-			"Human" )
+			'Human )
 	)
 )
 
@@ -74,10 +74,10 @@
 	(cond
 		( (= (random 2) 0)
 			(princ "Computer wins Coin Toss!") (terpri)
-			"Computer" )
+			'Computer )
 		( t
 			(princ "Human wins Coin Toss!") (terpri)
-			"Human"  )
+			'Human  )
 
 	)
 )

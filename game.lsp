@@ -50,7 +50,6 @@
 	(startRound (list (+ (getRoundNumber game) 1) (getNth 1 scores) () () (getNth 2 scores) () () () () () () ) )
 )
 
-
 (defun tallyScores (game)
 	(let* (
 		(computerPts (tallyHand (getComputerHand game) ) )

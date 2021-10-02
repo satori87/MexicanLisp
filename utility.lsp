@@ -152,3 +152,16 @@
 		)
 	)
 )
+
+;assumes lst and lst2 are same size
+;returns a list same size as lst with result of
+; lst[i] && lst2[i]
+(defun andList (lst lst2)
+	(cond
+		( (null lst)
+			() )
+		( t
+			(cons (and (first lst) (first lst2) ) (andList lst lst2) ) )
+			
+	)
+)
