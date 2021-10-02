@@ -10,7 +10,11 @@
 			(startRound  (setNextPlayer game (determineFirstPlayer (getComputerScore game) (getHumanScore game) ) ) ) )
 		( t
 			(format t '"Starting Round ~d. ~d goes first" (getRoundNumber game) (getNextPlayer game) ) (terpri)
-			game )
+			(let ( (engine (getEngine (getRoundNumber game) ) ) )
+				;finally, return the game with all 3 trains set to engine
+				(setMexicanTrain (setHumanTrain (setComputerTrain game engine ) engine ) engine)
+			)			
+		)
 	)
 )
 
@@ -42,7 +46,7 @@
 	(format t "Round ~d | Computer Score: ~d | Human Score: ~d" (getRoundNumber game) (getComputerScore game) (getHumanScore game) ) (terpri)
 	(printListLn '"Computer Hand  : " (getComputerHand game) ) 
 	(printListLn '"Human Hand     : " (getHumanHand game) )
-	(printList '"Player Trains  : " (getComputerTrain game) )
+	(printList '"Player Trains  : " (reverseList (getComputerTrain game) ) )
 	(format t " ~d " (getEngine (getRoundNumber game) ) )
 	(printListLn '"" (getHumanTrain game) )
 	(printListLn '"Mexican Train  : " (getMexicanTrain game) )

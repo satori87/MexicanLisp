@@ -11,7 +11,7 @@
 )
 
 (defun getComputerTrain (game)
-	(getNth 4 game)
+	(reverseList (getNth 4 game) )
 )
 
 (defun getHumanScore (game)

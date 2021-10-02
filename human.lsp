@@ -20,18 +20,53 @@
 (defun makeHumanMoves (game validTrains tilesPlayed)
 	(cond
 		( (= tilesPlayed 3)
-			() )
+			game ) ; return game to go all the way back up to playRound
 		( (null (hasValidMove game (getHumanHand game) validTrains) )
-			() )
+			game ) ; return game to go all the way back up to playRound
 		( t
-			(makeHumanMoves (promptForMove game validTrains) validTrains (+ tilesPlayed 1) ) )
+			;a successful move prompt returns a (game tile)
+			(let* ( 
+				(moveResult (promptForMove game validTrains) )
+				(alteredGame (first moveResult) )
+				(tilePlayed (first (rest moveResult) ) ) )
+				(cond
+					( (isDouble tilePlayed) ;if its a double, continue to play
+						(makeHumanMoves alteredGame validTrains (+ tilesPlayed 1) ) )
+					( t  ; otherwise just ruin the altered game object
+						alteredGame )
+				)				
+			)
 	)
 )
 
-(defun promptforMove (game validTrains)
-	;obtain input
-	;validate input
-	;validate legality of dest train
-	;validate legality of move
-	;make move and return altered game
+(defun promptForMove (game validTrains)
+	(let (
+		(trainInput (getValidTrainInput validTrains) )
+		(tile (getValidTileInput (getPlayerHand game) ) ) )
+		(cond
+			( (canPlayTileToTrain (getTrain game train) tile)
+				(playTileToTrain game trainInput tile) )
+			( t
+				(promptForMove game validTrains) )
+		)
+	)
+)
+
+(defun canPlayTileToTrain (train tile)
+
+)
+
+(defun playTileToTrain (game trainNumber tile)
+
+)
+
+;return 1 2 3 for C H M
+; so long as that nth is t
+(defun getValidTrainInput (validTrains)
+
+)
+
+;Return an actual tile
+(defun getValidTileInput (hand)
+
 )

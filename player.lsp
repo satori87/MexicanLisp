@@ -25,3 +25,6 @@
 	)
 )
 
+(defun hasValidMove (game hand validTrains)
+
+)

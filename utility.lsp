@@ -165,3 +165,7 @@
 			
 	)
 )
+
+(defun allButLast (lst)
+	(reverseList (rest (reverseList lst) ) )
+)
