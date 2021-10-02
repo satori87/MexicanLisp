@@ -11,7 +11,7 @@
 )
 
 (defun getComputerTrain (game)
-	(reverseList (getNth 4 game) )
+	(getNth 4 game)
 )
 
 (defun getHumanScore (game)
@@ -56,7 +56,10 @@
 			( (null ins)
 				(loadGame) )
 			( t
-				(append (read ins) (list () ) ) )
+				; now to add 11th element and to reverse computerTrain
+				(let ( (game (append (read ins) (list () ) ) ) )					
+					(setComputerTrain game (reverseList (getComputerTrain game) ) )
+				) )
 		)
 	)
 )

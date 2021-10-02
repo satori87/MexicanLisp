@@ -49,15 +49,19 @@
 ; as usual, we can assume this train is oriented
 ; with engine on left, marker on right
 ; (left to right). we can also assume train has
-; at least an engine
-; we cannot make any assumption about tile
-(defun canPlayTileToTrain (train tile)
+; at least an engine. if train is null, it MUST be mexican,
+; so use round number to fake a train with just the engine
+(defun canPlayTileToTrain (game train tile)
 	;if either of the values in tile matches the LAST value in train, return true
 	(cond
+		( (null train) 
+			(canPlayTileToTrain game (list (getEngine (getRoundNumber game) ) ) tile) )
 		( (= (getEndValue train) (first tile) )
 			t )
 		( (= (getEndValue train) (getLast tile) )
 			t )
+		( t
+			() )
 	)
 )
 

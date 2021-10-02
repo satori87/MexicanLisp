@@ -6,6 +6,12 @@
 			(startRound (setBoneyard (setComputerHand game (addTileToHand '"COMPUTER" (getComputerHand game) (getBoneyard game) ) ) (rest (getBoneyard game) ) ) ) )
 		( (< (getListLength (getHumanHand game) ) 16)
 			(startRound (setBoneyard (setHumanHand game (addTileToHand '"HUMAN" (getHumanHand game) (getBoneyard game) ) ) (rest (getBoneyard game) ) ) ) )
+		( (null (getComputerTrain game) )
+			(startRound (setComputerTrain (list (getEngine (getRoundNumber game) ) ) ) ) )
+		( (null (getHumanTrain game) )
+			(startRound (setHumanTrain (list (getEngine (getRoundNumber game) ) ) ) ) )
+		( (null (getMexicanTrain game) )
+			(startRound (setMexicanTrain (list (getEngine (getRoundNumber game) ) ) ) ) )
 		( (null (getNextPlayer game) )
 			(startRound  (setNextPlayer game (determineFirstPlayer (getComputerScore game) (getHumanScore game) ) ) ) )
 		( t

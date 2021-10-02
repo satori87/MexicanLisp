@@ -20,9 +20,9 @@
 (defun makeHumanMoves (game validTrains tilesPlayed)
 	(cond
 		( (= tilesPlayed 3)
-			game ) ; return game to go all the way back up to playRound
+			(endTurn game) ) ; return game to go all the way back up to playRound
 		( (null (hasValidMove game (getHumanHand game) validTrains) )
-			game ) ; return game to go all the way back up to playRound
+			(humanPass game tilesPlayed) ) ; return game to go all the way back up to playRound
 		( t
 			;a successful move prompt returns a (game tile)
 			(let* ( 
@@ -39,22 +39,30 @@
 	)
 )
 
+(defun humanPass (game tilesPlayed)
+	;announce
+	;if tilesplayed is 0 draw
+	;if drawn card, try to play
+	; if tilesplayed is still 0, set player passed on the 11th element
+	;in the end return the altered game object
+	; via endturn
+	(endTurn game)
+)
+
 (defun promptForMove (game validTrains)
 	(let (
-		(trainInput (getValidTrainInput validTrains) )
-		(tile (getValidTileInput (getPlayerHand game) ) ) )
+			(train (getValidTrainInput validTrains) )
+			(tile (getValidTileInput (getPlayerHand game) ) )
+		)
 		(cond
-			( (canPlayTileToTrain (getTrain game train) tile)
-				(playTileToTrain game trainInput tile) )
+			( (canPlayTileToTrain game (getTrain game train) tile)
+				(playTileToTrain game train tile) )
 			( t
 				(promptForMove game validTrains) )
 		)
 	)
 )
 
-(defun canPlayTileToTrain (train tile)
-
-)
 
 (defun playTileToTrain (game trainNumber tile)
 

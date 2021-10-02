@@ -48,6 +48,8 @@
 )
 
 (defun saveGame (game)
+	;gotta remove the engine from the mexican train
+	;and remove the 11th element (playerPassed) from game
 	(princ "Put save here") (terpri)
 	(quit)
 )
