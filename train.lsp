@@ -26,6 +26,8 @@
 	(cond
 		( (and marker (null (hasMarker train) ) )
 			(append train (list 'M) ) )
+		( (null marker)
+			(remMarker train) )
 		( t
 			train )
 	)
@@ -74,15 +76,16 @@
 	)
 )
 
+;returns list of (game tilePlayed trainNumberPlayed)
 (defun finalizePlay (game trainNumber train tile)
 	;now just pick the right train to set
 	(cond
 		( (= trainNumber 1)
-			(list (setComputerTrain game train) tile ) )
+			(list (setComputerTrain game train) tile trainNumber ) )
 		( (= trainNumber 2)
-			(list (setHumanTrain game train) tile ) )
+			(list (setHumanTrain game train) tile trainNumber ) )
 		( (= trainNumber 3)
-			(list (setMexicanTrain game train) tile ) )
+			(list (setMexicanTrain game train) tile trainNumber ) )
 	)
 )
 

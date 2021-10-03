@@ -18,12 +18,8 @@ VICTORY CONDITIONS
 
 
 
-set passed in end turn based on number of tiles played
+
+only remove marker if you played to your own PERSONALY train
 
 
-
-
-put/remove markers on trains correctly
-
-
-INCREASE TILESPLAYED SO HUMAN MARKER WORKS CORRECTLY
+Use the newly created local variable trainPlayed somehow to only remove the marker is train played is own train

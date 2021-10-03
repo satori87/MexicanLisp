@@ -54,6 +54,14 @@
 	(format t   '"Boneyard (~2,'0d)  :" (getListLength (getBoneyard game) ) )
 	(printTop (getBoneyard game) )
 	(format t '"It is ~d's turn" (getNextPlayer game) ) (terpri)
+	(cond
+		( (getHumanPassed game)
+			(princ "Human passed last turn.") (terpri) )
+	)
+	(cond
+		( (getComputerPassed game)
+			(princ "Computer passed last turn.") (terpri) )
+	)
 )
 
 (defun getEngine (roundNumber)

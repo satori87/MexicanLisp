@@ -36,7 +36,8 @@
 (defun makeHumanMove (game validTrains tilesPlayed)
 	(let* ( 
 		(moveResult (promptForMove game validTrains) )
-		(tilePlayed (first (rest moveResult) ) )
+		(tilePlayed (getNth 2 moveResult ) )
+		(trainPlayed (getNth 3 moveResult ) )
 		(alteredGame (setHumanHand (first moveResult) (remTile (getHumanHand (first moveResult) ) tilePlayed ) ) ) )
 		(cond
 			( (isDouble tilePlayed) ;if its a double, continue to play
@@ -55,37 +56,33 @@
 	; if tilesplayed is still 0, set player passed on the 11th element
 	;in the end return the altered game object
 	; via endturn
-	(princ "Human passes turn") (terpri)
+	(princ "Human passes turn.") (terpri)
 	(cond
 		( (= tilesPlayed 0)
-			(humanDraw game validTrains tilesPlayed) )
+			(humanDraw game validTrains) )
 		( t
 			(endTurn game tilesPlayed) )
 	)
 )
 
-(defun humanDraw (game validTrains tilesPlayed)
-
-	(princ "hey3") (terpri)
+(defun humanDraw (game validTrains)
 	(let ( (boneyard (getBoneyard game) ) )
 		(cond
 			( (null boneyard)
-				(endTurn game tilesPlayed) )
+				(endTurn game 0) )
 			( t
-				(checkDraw (setBoneyard (setHumanHand game (addTileToHand 'HUMAN (getHumanHand game) boneyard ) ) (rest boneyard ) ) validTrains tilesPlayed) )
+				(checkDraw (setBoneyard (setHumanHand game (addTileToHand 'HUMAN (getHumanHand game) boneyard ) ) (rest boneyard ) ) validTrains) )
 		)
 	)
 )
 
-(defun checkDraw (game validTrains tilesPlayed)
-
-	(princ "hey4") (terpri)
+(defun checkDraw (game validTrains)
 	;simply check if the card we drew is playable. if so, re-enter the turn loop
 	(cond
 		( (hasValidMove game (getHumanHand game) validTrains)
-			(makeHumanMove game validTrains tilesPlayed) )
+			(makeHumanMove game validTrains 0) )
 		( t
-			(endTurn game 1) )
+			(endTurn game 0) )
 	)
 )
 
