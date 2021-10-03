@@ -2,10 +2,20 @@
 	(cond
 		( (equal (getNextPlayer game) 'Computer)
 			(princ "***Computer Ends Turn. Human Starts Turn***") (terpri)
-			(setComputerTrain (setComputerPassed (setNextPlayer game 'Human) (= tilesPlayed 0) ) (setMarker (getComputerTrain game) (= tilesPlayed 0) ) ) )
+			(cond
+				( (> tilesPlayed 0) ;remove passed status, leave marker unchanged here
+					(setComputerPassed (setNextPlayer game 'Human) nil ) )
+				( t ;set passed to true and place marker
+					(setComputerTrain (setComputerPassed (setNextPlayer game 'Human) t ) (setMarker (getComputerTrain game) t ) ) )
+			) )
 		( (equal (getNextPlayer game) 'Human)
 			(format t "***Human Ends Turn. Computer Starts Turn***  Human played ~d tiles" tilesPlayed) (terpri)
-			(setHumanTrain (setHumanPassed (setNextPlayer game 'Computer) (= tilesPlayed 0) ) (setMarker (getHumanTrain game) (= tilesPlayed 0) ) ) )
+			(cond
+				( (> tilesPlayed 0) ;remove passed status, leave marker unchanged here
+					(setHumanPassed (setNextPlayer game 'Computer) nil ) )
+				( t ;set passed to true and place marker
+					(setHumanTrain (setHumanPassed (setNextPlayer game 'Computer) t ) (setMarker (getHumanTrain game) t ) ) )
+			) )
 	)
 )
 

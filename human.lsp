@@ -37,7 +37,7 @@
 	(let* ( 
 		(moveResult (promptForMove game validTrains) )
 		(tilePlayed (getNth 2 moveResult ) )
-		(trainPlayed (getNth 3 moveResult ) )
+		(playedOwnTrain (= (getNth 3 moveResult) 2 ) )
 		(alteredGame (setHumanHand (first moveResult) (remTile (getHumanHand (first moveResult) ) tilePlayed ) ) ) )
 		(cond
 			( (isDouble tilePlayed) ;if its a double, continue to play
@@ -93,7 +93,7 @@
 		)
 		(cond
 			( (canPlayTileToTrain game (getTrain game trainNumber) tile )
-				(playTileToTrain game trainNumber tile ) )
+				(playTileToTrain game trainNumber tile 2) )
 			( t
 				(promptForMove game validTrains) )
 		)

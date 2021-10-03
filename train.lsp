@@ -77,28 +77,38 @@
 )
 
 ;returns list of (game tilePlayed trainNumberPlayed)
-(defun finalizePlay (game trainNumber train tile)
+(defun finalizePlay (game trainNumber train tile playerNumber)
 	;now just pick the right train to set
 	(cond
 		( (= trainNumber 1)
-			(list (setComputerTrain game train) tile trainNumber ) )
+			(cond
+				( (= playerNumber 1)
+					(list (setComputerTrain game (remMarker train) ) tile trainNumber) )
+				(t
+					(list (setComputerTrain game train) tile trainNumber) )
+			) )			
 		( (= trainNumber 2)
-			(list (setHumanTrain game train) tile trainNumber ) )
+			(cond
+				( (= playerNumber 2)
+					(list (setHumanTrain game (remMarker train) ) tile trainNumber) )
+				(t
+					(list (setHumanTrain game train) tile trainNumber) )
+			) )		
 		( (= trainNumber 3)
-			(list (setMexicanTrain game train) tile trainNumber ) )
+			(list (setMexicanTrain game train) tile trainNumber) )
 	)
 )
 
-(defun playTileToTrain (game trainNumber tile)
+(defun playTileToTrain (game trainNumber tile playerNumber)
 	(format t "playing ~d to train ~d" tile trainNumber) (terpri)
 	(let* ( (train (getTrain game trainNumber) )
 			(marker (hasMarker train) )
 		  )
 		(cond
 			( (equal (getEndValue train) (first tile) )
-				(finalizePlay game trainNumber (setMarker (append (remMarker train) (list tile) ) marker) tile ) )
+				(finalizePlay game trainNumber (setMarker (append (remMarker train) (list tile) ) marker) tile playerNumber) )
 			( (equal (getEndValue train) (first (rest tile) ) )
-				(finalizePlay game trainNumber (setMarker (append (remMarker train) (list (reverseList tile) ) ) marker) (reverseList tile) ) )
+				(finalizePlay game trainNumber (setMarker (append (remMarker train) (list (reverseList tile) ) ) marker) (reverseList tile) playerNumber) )
 			( t
 				(princ "Fatal error") (terpri)
 				(quit) )

@@ -15,11 +15,10 @@ VICTORY CONDITIONS
 -empty hand either player
 -check boneyard and player passed variables
 
+place marker at end of turn if tilesplayed = 0
 
 
+remove marker in playTileToTrain if trainnumber = player supplied train number that needs to be added as argument to that function
 
 
-only remove marker if you played to your own PERSONALY train
-
-
-Use the newly created local variable trainPlayed somehow to only remove the marker is train played is own train
+add ability to kick back to inputting train when you are inputting tile
