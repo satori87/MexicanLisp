@@ -62,10 +62,10 @@
 	(cond
 		( (null lst)
 			() )
-		( (= (first lst) item)
+		( (equal (first lst) item)
 			(rest lst) )
 		( t
-			(cons (first lst) (removeFromList (rest lst) item ) ) )
+			(cons (first lst) (remList (rest lst) item ) ) )
 	)
 )
 

@@ -28,15 +28,15 @@
 			;a successful move prompt returns a (game tile)
 			(let* ( 
 				(moveResult (promptForMove game validTrains) )
-				(alteredGame (first moveResult) )
-				(tilePlayed (first (rest moveResult) ) ) )
+				(tilePlayed (first (rest moveResult) ) )
+				(alteredGame (setHumanHand (first moveResult) (remList (getHumanHand game) tilePlayed ) ) ) )
 				(cond
 					( (isDouble tilePlayed) ;if its a double, continue to play
 						(printRound alteredGame)
 						(makeHumanMoves alteredGame validTrains (+ tilesPlayed 1) ) )
 					( t  ; otherwise just ruin the altered game object
 						(endTurn alteredGame) )
-				)			
+				)		
 			)
 		)
 	)
@@ -69,8 +69,11 @@
 ;return 1 2 3 for C H M
 ; so long as that nth is t
 (defun getValidTrainInput (validTrains)
-	(let ( (input (getValidNumber 1 3 "Enter a number for (1) Computer Train (2) Human Train or (3) Mexican Train") ) )
+	(let ( (input (getValidNumber 1 4 "Enter a number for (1) Computer Train (2) Human Train or (3) Mexican Train or (4) for *HELP*") ) )
 		(cond
+			( (= input 4)
+				(askForHelp)
+				(getValidTrainInput validTrains) )
 			( (getNth input validTrains)
 				input )
 			( t
@@ -86,7 +89,7 @@
 		(cond
 			( (listContains hand tile)
 				tile )
-			( (listContains hand (reverseList (tile) ) )
+			( (listContains hand (reverseList tile) )
 				tile )
 			( t
 				(getLegalTileInput hand) )
@@ -97,7 +100,7 @@
 ; returns a valid formed tile
 ; e.g. list of 2 numbers 1-9
 (defun getValidTileInput ()
-	(princ "Enter a valid tile in your hand. Enter it by typing the first tile number, then a space, then the second number. Then press Enter: ") (terpri)
+	(princ "Enter a valid tile in your hand. Usage: (# #)") (terpri)
 	(let ( (tile (read) ) )
 		(cond
 			( (null tile)

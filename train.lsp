@@ -95,7 +95,7 @@
 			( (equal (getEndValue train) (first tile) )
 				(finalizePlay game trainNumber (setMarker (append (remMarker train) (list tile) ) marker) tile ) )
 			( (equal (getEndValue train) (first (rest tile) ) )
-				(finalizePlay game trainNumber (setMarker (append (remMarker train) (list (reverseList tile) ) ) marker) tile ) )
+				(finalizePlay game trainNumber (setMarker (append (remMarker train) (list (reverseList tile) ) ) marker) (reverseList tile) ) )
 			( t
 				(princ "Fatal error") (terpri)
 				(quit) )

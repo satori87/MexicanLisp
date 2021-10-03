@@ -56,7 +56,7 @@
 			( (null ins)
 				(loadGame) )
 			( t
-				; now to add 11th element and to reverse computerTrain
+				; now to add 11th element and to reverse computerTrain, also reverse each tile!
 				(let ( (game (append (read ins) (list () ) ) ) )					
 					(setComputerTrain game (reverseEach (reverseList (getComputerTrain game) ) ) )
 				) )
