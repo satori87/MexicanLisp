@@ -22,3 +22,6 @@ remove marker in playTileToTrain if trainnumber = player supplied train number t
 
 
 add ability to kick back to inputting train when you are inputting tile
+
+
+remove the superfluos train nubmer argument from human moves and the return list from finalize move
