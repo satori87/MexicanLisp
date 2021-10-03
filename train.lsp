@@ -22,6 +22,15 @@
 	)
 )
 
+(defun setMarker (train marker)
+	(cond
+		( marker
+			(append train (list 'M) ) )
+		( t
+			train )
+	)
+)
+
 (defun isAnyOrphans (game)
 	(OR (isDouble (getLast (remMarker (getComputerTrain game) ) ) ) (OR (isDouble (getLast (remMarker (getHumanTrain game) ) ) ) (isDouble (getLast (getMexicanTrain game) ) ) ) )
 )
@@ -79,17 +88,19 @@
 
 (defun playTileToTrain (game trainNumber tile)
 	(format t "playing ~d to train ~d" tile trainNumber) (terpri)
-	(let ( (train (getTrain game trainNumber) ) )
+	(let* ( (train (getTrain game trainNumber) )
+			(marker (hasMarker train) )
+		  )
 		(cond
 			( (equal (getEndValue train) (first tile) )
-				(finalizePlay game trainNumber (append train (list tile) ) tile ) )
+				(finalizePlay game trainNumber (setMarker (append (remMarker train) (list tile) ) marker) tile ) )
 			( (equal (getEndValue train) (first (rest tile) ) )
-				(finalizePlay game trainNumber (append train (list (reverseList tile) ) ) tile ) )
+				(finalizePlay game trainNumber (setMarker (append (remMarker train) (list (reverseList tile) ) ) marker) tile ) )
 			( t
 				(princ "Fatal error") (terpri)
 				(quit) )
-		)		
-	)	
+		)	
+	)
 )
 
 (defun getEndValue (train)
