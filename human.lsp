@@ -23,33 +23,66 @@
 		( (= tilesPlayed 3)
 			(endTurn game) ) ; return game to go all the way back up to playRound
 		( (null (hasValidMove game (getHumanHand game) validTrains) )
-			(humanPass game tilesPlayed) ) ; return game to go all the way back up to playRound
+			(humanPass game validTrains tilesPlayed) ) ; return game to go all the way back up to playRound
 		( t
-			;a successful move prompt returns a (game tile)
-			(let* ( 
-				(moveResult (promptForMove game validTrains) )
-				(tilePlayed (first (rest moveResult) ) )
-				(alteredGame (setHumanHand (first moveResult) (remList (getHumanHand game) tilePlayed ) ) ) )
-				(cond
-					( (isDouble tilePlayed) ;if its a double, continue to play
-						(printRound alteredGame)
-						(makeHumanMoves alteredGame validTrains (+ tilesPlayed 1) ) )
-					( t  ; otherwise just ruin the altered game object
-						(endTurn alteredGame) )
-				)		
-			)
-		)
+			(makeHumanMove game validTrains tilesPlayed) )
 	)
 )
 
-(defun humanPass (game tilesPlayed)
+(defun remTile (hand tile)
+	(remlist (remList hand tile) (reverseList tile) )
+)
+
+(defun makeHumanMove (game validTrains tilesPlayed)
+	(let* ( 
+		(moveResult (promptForMove game validTrains) )
+		(tilePlayed (first (rest moveResult) ) )
+		(alteredGame (setHumanHand (first moveResult) (remTile (getHumanHand (first moveResult) ) tilePlayed ) ) ) )
+		(cond
+			( (isDouble tilePlayed) ;if its a double, continue to play
+				(printRound alteredGame)
+				(makeHumanMoves alteredGame validTrains (+ tilesPlayed 1) ) )
+			( t  ; otherwise just end with the altered game object
+				(endTurn alteredGame) )
+		)		
+	)
+)
+
+(defun humanPass (game tilesPlayed validTrains)
 	;announce
 	;if tilesplayed is 0 draw
 	;if drawn card, try to play
 	; if tilesplayed is still 0, set player passed on the 11th element
 	;in the end return the altered game object
 	; via endturn
-	(endTurn game)
+	(princ "Human passes turn") (terpri)
+	(cond
+		( (= tilesPlayed 0)
+			(endTurn (humanDraw (setHumanPassed game t) validTrains tilesPlayed) ) )
+		( t
+			(endTurn (setHumanPassed game () ) ) )
+	)
+)
+
+(defun humanDraw (game validTrains tilesPlayed)
+	(let ( (boneyard (getBoneyard game) ) )
+		(cond
+			( (null boneyard)
+				game )
+			( t
+				(checkDraw (setBoneyard (setHumanHand game (addTileToHand 'HUMAN (getHumanHand game) boneyard ) ) (rest boneyard ) ) validTrains tilesPlayed) )
+		)
+	)
+)
+
+(defun checkDraw (game validTrains tilesPlayed)
+	;simply check if the card we drew is playable. if so, re-enter the turn loop
+	(cond
+		( (hasValidMove game (getHumanHand game) validTrains)
+			(makeHumanMove game validTrains tilesPlayed) )
+		( t
+			game )
+	)
 )
 
 (defun promptForMove (game validTrains)
