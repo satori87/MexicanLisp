@@ -48,7 +48,7 @@
 	)
 )
 
-(defun humanPass (game tilesPlayed validTrains)
+(defun humanPass (game validTrains tilesPlayed)
 	;announce
 	;if tilesplayed is 0 draw
 	;if drawn card, try to play
@@ -58,13 +58,15 @@
 	(princ "Human passes turn") (terpri)
 	(cond
 		( (= tilesPlayed 0)
-			(endTurn (humanDraw (setHumanPassed game t) validTrains tilesPlayed) ) )
+			(endTurn (humanDraw game validTrains tilesPlayed) ) )
 		( t
-			(endTurn (setHumanPassed game () ) ) )
+			(endTurn game) )
 	)
 )
 
 (defun humanDraw (game validTrains tilesPlayed)
+
+	(princ "hey3") (terpri)
 	(let ( (boneyard (getBoneyard game) ) )
 		(cond
 			( (null boneyard)
@@ -76,6 +78,8 @@
 )
 
 (defun checkDraw (game validTrains tilesPlayed)
+
+	(princ "hey4") (terpri)
 	;simply check if the card we drew is playable. if so, re-enter the turn loop
 	(cond
 		( (hasValidMove game (getHumanHand game) validTrains)

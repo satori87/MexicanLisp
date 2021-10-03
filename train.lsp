@@ -70,7 +70,7 @@
 		( (= (getEndValue train ) (getLast tile) )
 			t )
 		( t
-			(format t "hey ~d ~d" train tile) (terpri) nil )
+			nil )
 	)
 )
 

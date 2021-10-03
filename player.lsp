@@ -30,5 +30,25 @@
 )
 
 (defun hasValidMove (game hand validTrains)
-	t
+	(princ "hey2") (terpri)
+	(cond
+		( (null hand)
+			() )
+		( t
+			(or (canPlayTileAnywhere game (first hand) validTrains) (hasValidMove game (rest hand) validTrains) ) )
+	)
+)
+
+(defun canPlayTileAnywhere (game tile validTrains)
+	(princ "hey") (terpri)
+	(cond
+		( (and (getNth 1 validTrains) (canPlayTileToTrain game (getComputerTrain game) tile) )
+			t )
+		( (and (getNth 2 validTrains) (canPlayTileToTrain game (getHumanTrain game) tile) )
+			t )
+		( (and (getNth 3 validTrains) (canPlayTileToTrain game (getMexicanTrain game) tile) )
+			t )
+		( t
+			() )
+	)
 )
