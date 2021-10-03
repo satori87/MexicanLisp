@@ -1,13 +1,11 @@
-(defun endTurn (game)
+(defun endTurn (game tilesPlayed)
 	(cond
 		( (equal (getNextPlayer game) 'Computer)
-			(princ "***Computer Ends Turn. Human Starts Turn***")
-			(terpri)
-			(setNextPlayer game 'Human) )
+			(princ "***Computer Ends Turn. Human Starts Turn***") (terpri)
+			(setComputerTrain (setComputerPassed (setNextPlayer game 'Human) (= tilesPlayed 0) ) (setMarker (getComputerTrain game) (= tilesPlayed 0) ) ) )
 		( (equal (getNextPlayer game) 'Human)
-			(princ "***Human Ends Turn. Computer Starts Turn***")
-			(terpri)
-			(setNextPlayer game 'Computer) )
+			(format t "***Human Ends Turn. Computer Starts Turn***  Human played ~d tiles" tilesPlayed) (terpri)
+			(setHumanTrain (setHumanPassed (setNextPlayer game 'Computer) (= tilesPlayed 0) ) (setMarker (getHumanTrain game) (= tilesPlayed 0) ) ) )
 	)
 )
 

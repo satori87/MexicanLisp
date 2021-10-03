@@ -24,3 +24,6 @@ set passed in end turn based on number of tiles played
 
 
 put/remove markers on trains correctly
+
+
+INCREASE TILESPLAYED SO HUMAN MARKER WORKS CORRECTLY

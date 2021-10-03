@@ -21,7 +21,7 @@
 	(printlistLn '"Playable Trains: " validTrains )
 	(cond
 		( (= tilesPlayed 3)
-			(endTurn game) ) ; return game to go all the way back up to playRound
+			(endTurn game tilesPlayed) ) ; return game to go all the way back up to playRound
 		( (null (hasValidMove game (getHumanHand game) validTrains) )
 			(humanPass game validTrains tilesPlayed) ) ; return game to go all the way back up to playRound
 		( t
@@ -43,7 +43,7 @@
 				(printRound alteredGame)
 				(makeHumanMoves alteredGame validTrains (+ tilesPlayed 1) ) )
 			( t  ; otherwise just end with the altered game object
-				(endTurn alteredGame) )
+				(endTurn alteredGame (+ tilesPlayed 1) ) )
 		)		
 	)
 )
@@ -58,9 +58,9 @@
 	(princ "Human passes turn") (terpri)
 	(cond
 		( (= tilesPlayed 0)
-			(endTurn (humanDraw game validTrains tilesPlayed) ) )
+			(humanDraw game validTrains tilesPlayed) )
 		( t
-			(endTurn game) )
+			(endTurn game tilesPlayed) )
 	)
 )
 
@@ -70,7 +70,7 @@
 	(let ( (boneyard (getBoneyard game) ) )
 		(cond
 			( (null boneyard)
-				game )
+				(endTurn game tilesPlayed) )
 			( t
 				(checkDraw (setBoneyard (setHumanHand game (addTileToHand 'HUMAN (getHumanHand game) boneyard ) ) (rest boneyard ) ) validTrains tilesPlayed) )
 		)
@@ -85,7 +85,7 @@
 		( (hasValidMove game (getHumanHand game) validTrains)
 			(makeHumanMove game validTrains tilesPlayed) )
 		( t
-			game )
+			(endTurn game 1) )
 	)
 )
 
@@ -163,20 +163,3 @@
 		)
 	)
 )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

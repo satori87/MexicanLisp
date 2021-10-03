@@ -24,7 +24,7 @@
 
 (defun setMarker (train marker)
 	(cond
-		( marker
+		( (and marker (null (hasMarker train) ) )
 			(append train (list 'M) ) )
 		( t
 			train )
