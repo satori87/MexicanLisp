@@ -47,7 +47,7 @@
 	(format t "Round ~d | Computer Score: ~d | Human Score: ~d" (getRoundNumber game) (getComputerScore game) (getHumanScore game) ) (terpri)
 	(printListLn '"Computer Hand  : " (getComputerHand game) ) 
 	(printListLn '"Human Hand     : " (getHumanHand game) )
-	(printList '"Player Trains  : " (reverseList (rest (getComputerTrain game) ) ) )
+	(printList '"Player Trains  : " (reverseEach (reverseList (rest (getComputerTrain game) ) ) ) )
 	(format t "**~d**" (getEngine (getRoundNumber game) ) )
 	(printListLn '"" (rest (getHumanTrain game) ) )
 	(printListLn '"Mexican Train  : " (getMexicanTrain game) )

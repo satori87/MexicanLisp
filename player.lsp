@@ -23,12 +23,12 @@
 (defun getValidTrains (game playableTrains)
 	(cond
 		( (isAnyOrphans game)
-			(andList playableTrains (getOrphanTrains game) ) )
+			(getOrphanTrains game) )
 		( t
 			playableTrains )
 	)
 )
 
 (defun hasValidMove (game hand validTrains)
-	
+	t
 )

@@ -56,13 +56,40 @@
 	(cond
 		( (null train) 
 			(canPlayTileToTrain game (list (getEngine (getRoundNumber game) ) ) tile) )
-		( (= (getEndValue train) (first tile) )
+		( (= (getEndValue train ) (first tile) )
 			t )
-		( (= (getEndValue train) (getLast tile) )
+		( (= (getEndValue train ) (getLast tile) )
 			t )
 		( t
-			() )
+			(format t "hey ~d ~d" train tile) (terpri) nil )
 	)
+)
+
+(defun finalizePlay (game trainNumber train tile)
+	;now just pick the right train to set
+	(cond
+		( (= trainNumber 1)
+			(list (setComputerTrain game train) tile ) )
+		( (= trainNumber 2)
+			(list (setHumanTrain game train) tile ) )
+		( (= trainNumber 3)
+			(list (setMexicanTrain game train) tile ) )
+	)
+)
+
+(defun playTileToTrain (game trainNumber tile)
+	(format t "playing ~d to train ~d" tile trainNumber) (terpri)
+	(let ( (train (getTrain game trainNumber) ) )
+		(cond
+			( (equal (getEndValue train) (first tile) )
+				(finalizePlay game trainNumber (append train (list tile) ) tile ) )
+			( (equal (getEndValue train) (first (rest tile) ) )
+				(finalizePlay game trainNumber (append train (list (reverseList tile) ) ) tile ) )
+			( t
+				(princ "Fatal error") (terpri)
+				(quit) )
+		)		
+	)	
 )
 
 (defun getEndValue (train)

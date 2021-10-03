@@ -58,7 +58,7 @@
 			( t
 				; now to add 11th element and to reverse computerTrain
 				(let ( (game (append (read ins) (list () ) ) ) )					
-					(setComputerTrain game (reverseList (getComputerTrain game) ) )
+					(setComputerTrain game (reverseEach (reverseList (getComputerTrain game) ) ) )
 				) )
 		)
 	)

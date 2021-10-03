@@ -169,3 +169,14 @@
 (defun allButLast (lst)
 	(reverseList (rest (reverseList lst) ) )
 )
+
+(defun reverseEach (lst)
+	(cond
+		( (null lst)
+			() )
+		( (listp (first lst) )
+			(cons (reverseList (first lst) ) (reverseEach (rest lst) ) ) )
+		( t
+			(cons (first lst) (reverseEach (rest lst) ) ) )
+	)
+)
