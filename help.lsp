@@ -29,7 +29,7 @@
 	;step 2, checkOwnTrainPriority, where we see if our
 	;own train has a marker on it that needs to be removed
 	(let (
-		(advice (getBestDouble game validTrains playerNumber) ) )
+		(advice (getBestDouble game validTrains playerNumber 9) ) )
 		(cond
 			( (listp advice)
 				advice )
@@ -57,10 +57,18 @@
 	)
 )
 
-(defun getBestDouble (game validTrains playerNumber)
-	;if we have a marker
+;iterate down to 0 trying every double against your hand
+(defun getBestDouble (game validTrains playerNumber n)
+	(cond
+		( (= n 0)
+			() )
+		( (canPlayTileAnyWhere game (list n n) validTrains )
+			() )
+		( t
+			(getBestDouble validTrains playerNumber (- n 1) ) )
+	)
 )
 
 (defun getBestSingle (game validTrains playerNumber)
-
+	
 )
