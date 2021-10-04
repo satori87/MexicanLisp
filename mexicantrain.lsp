@@ -16,6 +16,8 @@
 	(load "C:/lisp/computer.lsp")
 	(load "C:/lisp/player.lsp")
 	(load "C:/lisp/train.lsp")
+	(load "C:/lisp/help.lsp")
+
 )
 
 (mexicanTrain)

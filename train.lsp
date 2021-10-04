@@ -119,3 +119,14 @@
 (defun getEndValue (train)
 	(getLast (getLast (remMarker train) ) )
 )
+
+(defun getTrainName (trainNumber)
+	(cond
+		( (= trainNumber 1)
+			'"Computer Train" )
+		( (= trainNumber 2)
+			'"Human Train" )
+		( (= trainNumber 3)
+			'"Mexican Train" )		
+	)
+)

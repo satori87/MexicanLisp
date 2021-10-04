@@ -118,10 +118,6 @@
 	)
 )
 
-(defun askForHelp (game validTrains)
-	
-)
-
 ;Return an actual tile
 (defun getLegalTileInput (hand)	
 	(let ( (tile (getValidTileInput) ) )
