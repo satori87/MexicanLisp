@@ -40,7 +40,7 @@
 )
 
 (defun checkPlayAgainstMarker (game validTrains playerNumber)
-	(and (and (playerHasMarker game playerNumber) (getNth playerNumber validTrains) ) (canPlayHandToTrain (getHand game playerNumber) ) )
+	(and (and (playerHasMarker game playerNumber) (getNth playerNumber validTrains) ) (canPlayHandToTrain (getHand game playerNumber) (getTrain game playerNumber) ) )
 )
 
 (defun checkOwnTrainPriority (game validTrains playerNumber)
@@ -53,22 +53,44 @@
 			(getBestSingle game (setNth (list () () () ) playerNumber t) playerNumber) ) 
 		( t
 			;get the best single move wherever the heck
-			(getBestSingle game validTrains playerNumber) )
+			(getBestSingle game validTrains playerNumber (getPriorityTiles) ) )
 	)
 )
 
 ;iterate down to 0 trying every double against your hand
 (defun getBestDouble (game validTrains playerNumber n)
 	(cond
-		( (= n 0)
-			() )
-		( (canPlayTileAnyWhere game (list n n) validTrains )
-			() )
+		( (listContains (getHand game playerNumber) (list n n) )
+			(cond
+				( (= n 0)
+					() )
+				( (canPlayTileAnyWhere game (list n n) validTrains )
+					(getBestTrainForTile game (list n n) validTrains playerNumber) )
+				( t
+					(getBestDouble validTrains playerNumber (- n 1) ) )
+			) )
 		( t
 			(getBestDouble validTrains playerNumber (- n 1) ) )
 	)
 )
 
-(defun getBestSingle (game validTrains playerNumber)
-	
+(defun getBestSingle (game validTrains playerNumber priorityTiles)
+	(cond
+		( (null priorityTiles)
+			;should be impossible but Just in case
+			(princ "Fatal getBestSingle") )
+		( (canPlayTileAnyWhere game (first priorityTiles) validTrains)
+			(getBestTrainForTile game  (first priorityTiles) validTrains playerNumber) )
+	)
+)
+
+(defun playTileToBestTrain (game tile validTrains playerNumber)
+	;by this point any marker considerations are baked into
+	;valid trains. all we need to do here is try to play in the 
+	; following order: opponent train, own train, mexican train
+	; keep in mind that we only know 
+)
+
+(defun canPlayHandToTrain (hand train)
+	;simply return true if any tile in this hand can be legally played to this train
 )
