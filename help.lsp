@@ -39,12 +39,16 @@
 	)
 )
 
+(defun checkPlayAgainstMarker (game validTrains playerNumber)
+	(and (and (playerHasMarker game playerNumber) (getNth playerNumber validTrains) ) (canPlayHandToTrain (getHand game playerNumber) ) )
+)
+
 (defun checkOwnTrainPriority (game validTrains playerNumber)
 	;second step of AI priority chain: marker on own train
 	;if there is one, and can play to it, recommend to do so
 	; otherwise move on to step 3, which is highest singles
 	(cond
-		( (and (and (playerHasMarker game playerNumber) (getNth playerNumber validTrains) ) (canPlayHandToTrain (getHand game playerNumber) ) )
+		( (checkPlayAgainstMarker game validTrains playerNumber)
 			;get the best single move on just own train
 			(getBestSingle game (setNth (list () () () ) playerNumber t) playerNumber) ) 
 		( t
@@ -54,7 +58,7 @@
 )
 
 (defun getBestDouble (game validTrains playerNumber)
-
+	;if we have a marker
 )
 
 (defun getBestSingle (game validTrains playerNumber)
