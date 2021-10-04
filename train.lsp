@@ -83,19 +83,19 @@
 		( (= trainNumber 1)
 			(cond
 				( (= playerNumber 1)
-					(list (setComputerTrain game (remMarker train) ) tile trainNumber) )
+					(list (setComputerTrain game (remMarker train) ) tile) )
 				(t
-					(list (setComputerTrain game train) tile trainNumber) )
+					(list (setComputerTrain game train) tile) )
 			) )			
 		( (= trainNumber 2)
 			(cond
 				( (= playerNumber 2)
-					(list (setHumanTrain game (remMarker train) ) tile trainNumber) )
+					(list (setHumanTrain game (remMarker train) ) tile) )
 				(t
-					(list (setHumanTrain game train) tile trainNumber) )
+					(list (setHumanTrain game train) tile) )
 			) )		
 		( (= trainNumber 3)
-			(list (setMexicanTrain game train) tile trainNumber) )
+			(list (setMexicanTrain game train) tile) )
 	)
 )
 

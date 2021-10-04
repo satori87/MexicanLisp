@@ -37,7 +37,6 @@
 	(let* ( 
 		(moveResult (promptForMove game validTrains) )
 		(tilePlayed (getNth 2 moveResult ) )
-		(playedOwnTrain (= (getNth 3 moveResult) 2 ) )
 		(alteredGame (setHumanHand (first moveResult) (remTile (getHumanHand (first moveResult) ) tilePlayed ) ) ) )
 		(cond
 			( (isDouble tilePlayed) ;if its a double, continue to play
@@ -88,10 +87,12 @@
 
 (defun promptForMove (game validTrains)
 	(let (
-			(trainNumber (getValidTrainInput validTrains) )
+			(trainNumber (getValidTrainInput game validTrains) )
 			(tile (getLegalTileInput (getHumanHand game) ) )
 		)
 		(cond
+			( (and (numberp tile) (= tile 1) )
+				(promptForMove game validTrains) )
 			( (canPlayTileToTrain game (getTrain game trainNumber) tile )
 				(playTileToTrain game trainNumber tile 2) )
 			( t
@@ -102,11 +103,11 @@
 
 ;return 1 2 3 for C H M
 ; so long as that nth is t
-(defun getValidTrainInput (validTrains)
+(defun getValidTrainInput (game validTrains)
 	(let ( (input (getValidNumber 1 4 "Enter a number for (1) Computer Train (2) Human Train or (3) Mexican Train or (4) for *HELP*") ) )
 		(cond
 			( (= input 4)
-				(askForHelp)
+				(askForHelpgame validTrains)
 				(getValidTrainInput validTrains) )
 			( (getNth input validTrains)
 				input )
@@ -117,10 +118,16 @@
 	)
 )
 
+(defun askForHelp (game validTrains)
+	
+)
+
 ;Return an actual tile
 (defun getLegalTileInput (hand)	
 	(let ( (tile (getValidTileInput) ) )
 		(cond
+			( (and (numberp tile) (= tile 1))
+				tile )
 			( (listContains hand tile)
 				tile )
 			( (listContains hand (reverseList tile) )
@@ -134,11 +141,13 @@
 ; returns a valid formed tile
 ; e.g. list of 2 numbers 1-9
 (defun getValidTileInput ()
-	(princ "Enter a valid tile in your hand. Usage: (# #)") (terpri)
+	(princ "Enter a valid tile in your hand. Usage: (# #) or enter (1) to go back") (terpri)
 	(let ( (tile (read) ) )
 		(cond
 			( (null tile)
 				(getValidTileInput) )
+			( (and (numberp tile) (= tile 1) )
+				tile ) ;return a 1 if we wanna go back
 			( (equal (listp tile) () )
 				(getValidTileInput) )
 			( (/= (getListLength tile) 2)
