@@ -84,7 +84,7 @@
 	)
 )
 
-(defun playTileToBestTrain (game tile validTrains playerNumber)
+(defun getBestTrainForTile (game tile validTrains playerNumber)
 	;by this point any marker considerations are baked into
 	;valid trains. all we need to do here is try to play in the 
 	; following order: opponent train, own train, mexican train
