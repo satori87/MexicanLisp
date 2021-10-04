@@ -58,3 +58,16 @@
 			() )
 	)
 )
+
+(defun getHand (game playerNumber)
+	(cond
+		( (= playerNumber 1)
+			(getComputerHand game) )
+		( (= playerNumber 2)
+			(getHumanHand game) )
+	)
+)
+
+(defun playerHasMarker (game playerNumber)
+	(hasMarker (getTrain game playerNumber) )
+)

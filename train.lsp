@@ -57,6 +57,17 @@
 	)
 )
 
+(defun canPlayHandToTrain (game train hand)
+	(cond
+		( (null hand)
+			() )
+		( (canPlayTileToTrain game train (first hand) )
+			t )
+		(t
+			(canPlayHandToTrain game train (rest hand) ) )
+	)
+)
+
 ; as usual, we can assume this train is oriented
 ; with engine on left, marker on right
 ; (left to right). we can also assume train has
