@@ -40,7 +40,7 @@
 )
 
 (defun checkPlayAgainstMarker (game validTrains playerNumber)
-	(and (and (playerHasMarker game playerNumber) (getNth playerNumber validTrains) ) (canPlayHandToTrain (getHand game playerNumber) (getTrain game playerNumber) ) )
+	(and (and (playerHasMarker game playerNumber) (getNth playerNumber validTrains) ) (canPlayHandToTrain game (getHand game playerNumber) (getTrain game playerNumber) ) )
 )
 
 (defun checkOwnTrainPriority (game validTrains playerNumber)
@@ -91,6 +91,14 @@
 	; keep in mind that we only know 
 )
 
-(defun canPlayHandToTrain (hand train)
+(defun canPlayHandToTrain (game hand train)
 	;simply return true if any tile in this hand can be legally played to this train
+	(cond
+		(null hand)
+			() )
+		(canPlayTileToTrain game train (first hand) )
+			t )
+		( t
+			(canPlayHandToTrain game (rest hand) train) )
+	)
 )
