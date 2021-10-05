@@ -1,4 +1,4 @@
-; STRATEGYaskforhelp
+; STRATEGY
 ;  play doubles above all else
 ;  If marker on own train and can play to own train, do it
 ;  otherwise, play highest single
@@ -16,20 +16,9 @@
 				(trainNumber (getNth 1 advice ) )
 				(tile (getNth 2 advice ) )
 				)
-				(format t '"I recommend you play ~d to ~d because ~d " tile (getTrainName trainNumber) (getMoveReason game trainNumber tile 2) ) (terpri)
+				(format t "I recommend you play ~d to ~d because ~d " tile (getTrainName trainNumber) (getMoveReason trainNumber tile) ) (terpri)
 			)
 		)
-	)
-)
-
-(defun getMoveReason (game trainNumber tile playerNumber)
-	(cond
-		( (isDouble tile)
-			(format nil '"~d is the highest playable double, allowing another turn" tile) )
-		( (and (= trainNumber playerNumber) (playerHasMarker game playerNumber) )
-			(format nil '"~d is the best tile playable to own train, which has a marker to consider" tile) )
-		( t
-			(format nil '"~d is the highest pip count tile in hand to get rid of" tile) )
 	)
 )
 
@@ -78,10 +67,10 @@
 				( (canPlayTileAnyWhere game (list n n) validTrains )
 					(getBestTrainForTile game (list n n) validTrains playerNumber) )
 				( t
-					(getBestDouble game validTrains playerNumber (- n 1) ) )
+					(getBestDouble validTrains playerNumber (- n 1) ) )
 			) )
 		( t
-			(getBestDouble game validTrains playerNumber (- n 1) ) )
+			(getBestDouble validTrains playerNumber (- n 1) ) )
 	)
 )
 
@@ -100,16 +89,14 @@
 	;valid trains. all we need to do here is try to play in the 
 	; following order: opponent train, own train, mexican train
 	; keep in mind that we only know 
-	(format t "i wanna play ~d" tile) (terpri)
-	(list 1 tile)
 )
 
 (defun canPlayHandToTrain (game hand train)
 	;simply return true if any tile in this hand can be legally played to this train
 	(cond
-		( (null hand)
+		(null hand)
 			() )
-		( (canPlayTileToTrain game train (first hand) )
+		(canPlayTileToTrain game train (first hand) )
 			t )
 		( t
 			(canPlayHandToTrain game (rest hand) train) )

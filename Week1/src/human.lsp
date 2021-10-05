@@ -107,13 +107,13 @@
 	(let ( (input (getValidNumber 1 4 "Enter a number for (1) Computer Train (2) Human Train or (3) Mexican Train or (4) for *HELP*") ) )
 		(cond
 			( (= input 4)
-				(askForHelp game validTrains)
-				(getValidTrainInput game validTrains) )
+				(askForHelpgame validTrains)
+				(getValidTrainInput validTrains) )
 			( (getNth input validTrains)
 				input )
 			( t
 				(princ "You may not play to that train!") (terpri)
-				(getValidTrainInput game validTrains) )
+				(getValidTrainInput validTrains) )
 		)
 	)
 )
