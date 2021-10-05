@@ -67,7 +67,7 @@
 	(cond
 		( (checkPlayAgainstMarker game validTrains playerNumber)
 			;get the best single move on just own train
-			(getBestSingle game (setNth (list () () () ) playerNumber t) playerNumber) ) 
+			(getBestSingle game (setNth (list () () () ) playerNumber t) playerNumber (getPriorityTiles) ) ) 
 		( t
 			;get the best single move wherever the heck
 			(getBestSingle game validTrains playerNumber (getPriorityTiles) ) )
@@ -95,13 +95,15 @@
 )
 
 (defun getBestSingle (game validTrains playerNumber priorityTiles)
-	(princ "getBestSingle") (terpri)
+	(format t '"getBestSingle ~d ~d" validTrains playerNumber) (terpri)
 	(cond
 		( (null priorityTiles)
 			;should be impossible but Just in case
 			(princ "Fatal getBestSingle") )
-		( (canPlayTileAnyWhere game (first priorityTiles) validTrains)
+		( (and (listContains (getHand game playerNumber) (first priorityTiles) ) (canPlayTileAnyWhere game (first priorityTiles) validTrains) )
 			(getBestTrainForTile game  (first priorityTiles) validTrains playerNumber) )
+		( t
+			(getBestSingle game validTrains playerNumber (rest priorityTiles) ) )
 	)
 )
 
@@ -114,16 +116,21 @@
 	(cond
 		( (and (playerHasMarker game playerNumber) (getNth playerNumber validTrains) )
 			;we can play this tile to our own marked train, so do it
+				(princ "A5") (terpri)
 				(list playerNumber tile) )
 		( (and (isDouble tile) (getNth (- 3 playerNumber) validTrains) )
+			(princ "A4") (terpri)
 			(list (- 3 playerNumber) tile)  )
 		( (getNth playerNumber validTrains)
 			;next play on our own
+			(princ "A3") (terpri)
 			(list playerNumber tile)  )
 		( (getNth (- 3 playerNumber) validTrains)
+			(princ "A2") (terpri)
 			(list (- 3 playerNumber) tile)  )
 		( t
 			;only other option is mexican
+			(princ "A1") (terpri)
 			(list 3 tile)  )
 	)
 )

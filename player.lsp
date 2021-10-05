@@ -47,6 +47,7 @@
 )
 
 (defun canPlayTileAnywhere (game tile validTrains)
+	(format t '"canPlayTileAnyWhere ~d ~d" tile validTrains) (terpri)
 	(cond
 		( (and (getNth 1 validTrains) (canPlayTileToTrain game (getComputerTrain game) tile) )
 			t )
@@ -60,6 +61,7 @@
 )
 
 (defun getHand (game playerNumber)
+	(format t "getHand ~d" playerNumber) (terpri)
 	(cond
 		( (= playerNumber 1)
 			(getComputerHand game) )

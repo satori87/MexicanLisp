@@ -8,13 +8,11 @@
 
 
 
-
-
-Debugging of getBestTrainForTile:
-
-Fails after first tile is played in new game case. infinite loop suspected....
-just put princs in everywhere until you figure it out
-
-
-
 REREAD the entire game description to catch anymore issues!!!
+
+
+
+
+
+get valid orphan trains:
+dont count empty trains as valid!

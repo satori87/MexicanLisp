@@ -103,6 +103,7 @@
 
 ;returns t or nil if the list contains the item
 (defun listContains(lst item)
+	(princ "hey hey") (terpri)
 	(cond
 		( (null lst)
 			() )
