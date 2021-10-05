@@ -138,6 +138,8 @@
 		( (= trainNumber 2)
 			'"Human Train" )
 		( (= trainNumber 3)
-			'"Mexican Train" )		
+			'"Mexican Train" )
+		( t
+			'"ErrorTrain: ~d" trainNumber )
 	)
 )

@@ -100,8 +100,21 @@
 	;valid trains. all we need to do here is try to play in the 
 	; following order: opponent train, own train, mexican train
 	; keep in mind that we only know 
-	(format t "i wanna play ~d" tile) (terpri)
-	(list 1 tile)
+	(cond
+		( (and (playerHasMarker game playerNumber) (getNth playerNumber validTrains) )
+			;we can play this tile to our own marked train, so do it
+				(list playerNumber tile) )
+		( (and (isDouble tile) (getNth (- 3 playerNumber) validTrains) )
+			(list (- 3 playerNumber) tile)  )
+		( (getNth playerNumber validTrains)
+			;next play on our own
+			(list playerNumber tile)  )
+		( (getNth (- 3 playerNumber) validTrains)
+			(list (- 3 playerNumber) tile)  )
+		( t
+			;only other option is mexican
+			(list 3 tile)  )
+	)
 )
 
 (defun canPlayHandToTrain (game hand train)
