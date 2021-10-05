@@ -12,4 +12,9 @@
 
 Debugging of getBestTrainForTile:
 
-Fails after first tile is played in new game case
+Fails after first tile is played in new game case. infinite loop suspected....
+just put princs in everywhere until you figure it out
+
+
+
+REREAD the entire game description to catch anymore issues!!!

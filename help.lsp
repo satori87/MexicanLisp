@@ -23,6 +23,7 @@
 )
 
 (defun getMoveReason (game trainNumber tile playerNumber)
+	(princ "getMoveReason") (terpri)
 	(cond
 		( (isDouble tile)
 			(format nil '"~d is the highest playable double, allowing another turn" tile) )
@@ -36,12 +37,15 @@
 ;move this to player, its modular
 ;use playernumber to determine which train is our own
 (defun getBestMove (game validTrains playerNumber)
+	(princ "getBestMove") (terpri)
 	;first try to play doublz, otherewise move on to
 	;step 2, checkOwnTrainPriority, where we see if our
 	;own train has a marker on it that needs to be removed
 	(let (
 		(advice (getBestDouble game validTrains playerNumber 9) ) )
 		(cond
+			( (null advice)
+				(checkOwnTrainPriority game validTrains playerNumber) )
 			( (listp advice)
 				advice )
 			( t
@@ -51,10 +55,12 @@
 )
 
 (defun checkPlayAgainstMarker (game validTrains playerNumber)
+	(princ "checkPlayAgainstMarker") (terpri)
 	(and (and (playerHasMarker game playerNumber) (getNth playerNumber validTrains) ) (canPlayHandToTrain game (getHand game playerNumber) (getTrain game playerNumber) ) )
 )
 
 (defun checkOwnTrainPriority (game validTrains playerNumber)
+	(princ "checkOwnTrainPriority") (terpri)
 	;second step of AI priority chain: marker on own train
 	;if there is one, and can play to it, recommend to do so
 	; otherwise move on to step 3, which is highest singles
@@ -70,7 +76,10 @@
 
 ;iterate down to 0 trying every double against your hand
 (defun getBestDouble (game validTrains playerNumber n)
+	(format t '"getBestDouble ~d" n) (terpri)
 	(cond
+		( (= n 0)
+			() )
 		( (listContains (getHand game playerNumber) (list n n) )
 			(cond
 				( (= n 0)
@@ -86,6 +95,7 @@
 )
 
 (defun getBestSingle (game validTrains playerNumber priorityTiles)
+	(princ "getBestSingle") (terpri)
 	(cond
 		( (null priorityTiles)
 			;should be impossible but Just in case
@@ -96,6 +106,7 @@
 )
 
 (defun getBestTrainForTile (game tile validTrains playerNumber)
+	(princ "getBestTrainForTile") (terpri)
 	;by this point any marker considerations are baked into
 	;valid trains. all we need to do here is try to play in the 
 	; following order: opponent train, own train, mexican train
@@ -118,6 +129,7 @@
 )
 
 (defun canPlayHandToTrain (game hand train)
+	(princ "canPlayHandToTrain") (terpri)
 	;simply return true if any tile in this hand can be legally played to this train
 	(cond
 		( (null hand)
