@@ -120,8 +120,12 @@
 				(finalizePlay game trainNumber (setMarker (append (remMarker train) (list tile) ) marker) tile playerNumber) )
 			( (equal (getEndValue train) (first (rest tile) ) )
 				(finalizePlay game trainNumber (setMarker (append (remMarker train) (list (reverseList tile) ) ) marker) (reverseList tile) playerNumber) )
+			( (and (= trainNumber 3) (= (first tile) (first (getEngine (getRoundNumber game) ) ) ) )
+				(finalizePlay game trainNumber (setMarker (append (remMarker train) (list tile) ) marker) tile playerNumber) )
+			( (and (= trainNumber 3) (= (first (rest tile) ) (first (getEngine (getRoundNumber game) ) ) ) )
+				(finalizePlay game trainNumber (setMarker (append (remMarker train) (list (reverseList tile) ) ) marker) (reverseList tile) playerNumber) )
 			( t
-				(princ "Fatal error") (terpri)
+				(format t "Fatal error1 ~d ~d ~d ~d" (getEndValue Train) tile trainNumber playerNumber) (terpri)
 				(quit) )
 		)	
 	)

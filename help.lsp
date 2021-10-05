@@ -101,10 +101,14 @@
 			;should be impossible but Just in case
 			(princ "Fatal getBestSingle") )
 		( (and (listContains (getHand game playerNumber) (first priorityTiles) ) (canPlayTileAnyWhere game (first priorityTiles) validTrains) )
-			(getBestTrainForTile game  (first priorityTiles) validTrains playerNumber) )
+			(getBestTrainForTile game  (first priorityTiles) (getValidTrainsForTile game (first priorityTiles) ) playerNumber) )
 		( t
 			(getBestSingle game validTrains playerNumber (rest priorityTiles) ) )
 	)
+)
+
+(defun getValidTrainsForTile (game tile)
+	(list (canPlayTileToTrain game (getComputerTrain game) tile) (canPlayTileToTrain game (getHumanTrain game) tile) (canPlayTileToTrain game (getMexicanTrain game) tile) )
 )
 
 (defun getBestTrainForTile (game tile validTrains playerNumber)

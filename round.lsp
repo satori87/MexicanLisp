@@ -29,7 +29,7 @@
 		( (equal (getNextPlayer game) 'Human )
 			(playRound (takeHumanTurn game) ) )
 		( t
-			(princ "Fatal Error") (quit) )
+			(format t "Fatal Error0 ~d" game) (quit) )
 	)
 )
 
