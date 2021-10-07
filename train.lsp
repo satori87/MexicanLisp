@@ -40,9 +40,9 @@
 
 (defun getOrphanTrains (game)
 	(list
-		(isDouble (getLast (remMarker (getComputerTrain game) ) ) )
-		(isDouble (getLast (remMarker (getHumanTrain game) ) ) )
-		(isDouble (getLast (getMexicanTrain game) ) )
+		(and isDouble (getLast (remMarker (getComputerTrain game) ) ) (> (getListLength (getComputerTrain game) ) 1 ) )
+		(and isDouble (getLast (remMarker (getHumanTrain game) ) ) (> (getListLength (getHumanTrain game) ) 1 ) )
+		(and (isDouble (getLast (getMexicanTrain game) ) ) (> (getListLength (getMexicanTrain game) ) 0 ) )
 	)	
 )
 

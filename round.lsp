@@ -12,6 +12,8 @@
 			(startRound (setHumanTrain game (list (getEngine (getRoundNumber game) ) ) ) ) )
 		( (null (getNextPlayer game) )
 			(startRound  (setNextPlayer game (determineFirstPlayer (getComputerScore game) (getHumanScore game) ) ) ) )
+		( (listContains (getBoneyard game) (getEngine (getRoundNumber game) ) )
+			(startRound (setBoneyard (remList (getBoneyard game) (getEngine (getRoundNumber game) ) ) ) )
 		( t
 			(format t '"Starting Round ~d. ~d goes first" (getRoundNumber game) (getNextPlayer game) ) (terpri)
 			game
