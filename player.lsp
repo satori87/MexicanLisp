@@ -28,6 +28,10 @@
 	)
 )
 
+(defun remTile (hand tile)
+	(remlist (remList hand tile) (reverseList tile) )
+)
+
 (defun getValidTrains (game playableTrains)
 	(cond
 		( (isAnyOrphans game)

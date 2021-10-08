@@ -29,10 +29,6 @@
 	)
 )
 
-(defun remTile (hand tile)
-	(remlist (remList hand tile) (reverseList tile) )
-)
-
 (defun makeHumanMove (game validTrains tilesPlayed)
 	(let* ( 
 		(moveResult (promptForMove game validTrains) )
