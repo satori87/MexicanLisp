@@ -12,35 +12,3 @@ REREAD the entire game description to catch anymore issues!!!
 
 Play through all 4 cases (dont seed random for demo)
 Make sure each help and computer move makes perfect sense and is legal
-
-
-
-FIXED, TEST THESE*******************************
-Remove engine frome boneyard during start round!
-get valid orphan trains: dont count empty trains as valid!
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Find out why (2 2) is being recommended against a train that cannot play it
-
-happening in getBestTrainForTile
