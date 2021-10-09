@@ -34,14 +34,18 @@
 )
 
 (defun isAnyOrphans (game)
-	(OR (isDouble (getLast (remMarker (getComputerTrain game) ) ) ) (OR (isDouble (getLast (remMarker (getHumanTrain game) ) ) ) (isDouble (getLast (getMexicanTrain game) ) ) ) )
+	(OR 
+		(and (isDouble (getLast (remMarker (getComputerTrain game) ) ) ) (> (getListLength (getComputerTrain game) ) 1 ) )
+	(OR (and (isDouble (getLast (remMarker (getHumanTrain game) ) ) ) (> (getListLength (getHumanTrain game) ) 1 ) )
+		(and (isDouble (getLast (getMexicanTrain game) ) ) (> (getListLength (getMexicanTrain game) ) 0 ) )
+	) )
 )
 
 
 (defun getOrphanTrains (game)
 	(list
-		(and isDouble (getLast (remMarker (getComputerTrain game) ) ) (> (getListLength (getComputerTrain game) ) 1 ) )
-		(and isDouble (getLast (remMarker (getHumanTrain game) ) ) (> (getListLength (getHumanTrain game) ) 1 ) )
+		(and (isDouble (getLast (remMarker (getComputerTrain game) ) ) ) (> (getListLength (getComputerTrain game) ) 1 ) )
+		(and (isDouble (getLast (remMarker (getHumanTrain game) ) ) ) (> (getListLength (getHumanTrain game) ) 1 ) )
 		(and (isDouble (getLast (getMexicanTrain game) ) ) (> (getListLength (getMexicanTrain game) ) 0 ) )
 	)	
 )

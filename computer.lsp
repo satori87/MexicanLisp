@@ -30,7 +30,7 @@
 
 (defun makeComputerMove (game validTrains tilesPlayed)
 	(let* ( 
-		(moveResult (promptForMove game validTrains) )
+		(moveResult (getComputerMove game validTrains) )
 		(tilePlayed (getNth 2 moveResult ) )
 		(alteredGame (setComputerHand (first moveResult) (remTile (getComputerHand (first moveResult) ) tilePlayed ) ) ) )
 		(cond

@@ -22,8 +22,29 @@
 	)
 )
 
+
+(defun getComputerMove (game validTrains)
+	;iterate through raw boneyard, seeing if that tile is in hand
+	;if it is, call canPlayTileAnywhere
+	;if that returns true, pick the most optimal train for that tile
+	(cond
+		( (null (hasValidMove game (getComputerHand game) validTrains) )
+			(princ "Computer has no valid move.") (terpri) )
+		( t
+			(let* (
+				(advice (getBestMove game validTrains 1) )
+				(trainNumber (getNth 1 advice ) )
+				(tile (getNth 2 advice ) )
+				)
+				(format t '"Computer plays ~d to ~d because ~d " tile (getTrainName trainNumber) (getMoveReason game trainNumber tile 1) ) (terpri)
+				(playTileToTrain game trainNumber tile 1)
+			)
+		)
+	)
+)
+
 (defun getMoveReason (game trainNumber tile playerNumber)
-	(princ "getMoveReason") (terpri)
+	(format t "getMoveReason ~d ~d ~d" trainNumber tile playerNumber) (terpri)
 	(cond
 		( (isDouble tile)
 			(format nil '"~d is the highest playable double, allowing another turn" tile) )

@@ -2,6 +2,8 @@
 	(cond
 		( (null (getBoneyard game) )
 			(startRound (setBoneyard game (newBoneyard) ) ) )
+		( (listContains (getBoneyard game) (getEngine (getRoundNumber game) ) )
+			(startRound (setBoneyard game (remList (getBoneyard game) (getEngine (getRoundNumber game) ) ) ) ) )
 		( (< (getListLength (getComputerHand game) ) 16)
 			(startRound (setBoneyard (setComputerHand game (addTileToHand 'COMPUTER (getComputerHand game) (getBoneyard game) ) ) (rest (getBoneyard game) ) ) ) )
 		( (< (getListLength (getHumanHand game) ) 16)
@@ -12,8 +14,6 @@
 			(startRound (setHumanTrain game (list (getEngine (getRoundNumber game) ) ) ) ) )
 		( (null (getNextPlayer game) )
 			(startRound  (setNextPlayer game (determineFirstPlayer (getComputerScore game) (getHumanScore game) ) ) ) )
-		( (listContains (getBoneyard game) (getEngine (getRoundNumber game) ) )
-			(startRound (setBoneyard (remList (getBoneyard game) (getEngine (getRoundNumber game) ) ) ) )
 		( t
 			(format t '"Starting Round ~d. ~d goes first" (getRoundNumber game) (getNextPlayer game) ) (terpri)
 			game

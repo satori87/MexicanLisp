@@ -21,8 +21,26 @@ get valid orphan trains: dont count empty trains as valid!
 
 
 
-Finish converting human code to computer
 
-just gotta put a call to askForHelp in makeComputerMove.
 
-connect it up bing bang boom
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Find out why (2 2) is being recommended against a train that cannot play it
+
+happening in getBestTrainForTile
