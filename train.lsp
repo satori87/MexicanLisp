@@ -43,6 +43,7 @@
 
 
 (defun getOrphanTrains (game)
+	(princ "BADFBADBADB") (terpri)
 	(list
 		(and (isDouble (getLast (remMarker (getComputerTrain game) ) ) ) (> (getListLength (getComputerTrain game) ) 1 ) )
 		(and (isDouble (getLast (remMarker (getHumanTrain game) ) ) ) (> (getListLength (getHumanTrain game) ) 1 ) )

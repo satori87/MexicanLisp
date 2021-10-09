@@ -122,7 +122,7 @@
 			;should be impossible but Just in case
 			(princ "Fatal getBestSingle") )
 		( (and (listContains (getHand game playerNumber) (first priorityTiles) ) (canPlayTileAnyWhere game (first priorityTiles) validTrains) )
-			(getBestTrainForTile game  (first priorityTiles) (getValidTrainsForTile game (first priorityTiles) ) playerNumber) )
+			(getBestTrainForTile game  (first priorityTiles) validTrains playerNumber) )
 		( t
 			(getBestSingle game validTrains playerNumber (rest priorityTiles) ) )
 	)
@@ -139,19 +139,19 @@
 	; following order: opponent train, own train, mexican train
 	; keep in mind that we only know 
 	(cond
-		( (and (playerHasMarker game playerNumber) (getNth playerNumber validTrains) )
+		( (and (playerHasMarker game playerNumber) (and (getNth playerNumber validTrains) (canPlayTileToTrain game (getTrain game playerNumber) tile) ) )
 			;we can play this tile to our own marked train, so do it
 				(princ "A5") (terpri)
 				(list playerNumber tile) )
-		( (and (isDouble tile) (getNth (- 3 playerNumber) validTrains) )
+		( (and (isDouble tile) (and (getNth (- 3 playerNumber) validTrains) (canPlayTileToTrain game (getTrain game (- 3 playerNumber) ) tile) ) )
 			(princ "A4") (terpri)
 			(list (- 3 playerNumber) tile)  )
-		( (getNth playerNumber validTrains)
+		( (and (getNth playerNumber validTrains) (canPlayTileToTrain game (getTrain game playerNumber) tile) )
 			;next play on our own
 			(princ "A3") (terpri)
 			(list playerNumber tile)  )
-		( (getNth (- 3 playerNumber) validTrains)
-			(princ "A2") (terpri)
+		( (and (getNth (- 3 playerNumber) validTrains) (canPlayTileToTrain game (getTrain game (- 3 playerNumber) ) tile) )
+			(format t "A2 ~d ~d ~d ~d" validTrains playerNumber (- 3 playerNumber) tile) (terpri)
 			(list (- 3 playerNumber) tile)  )
 		( t
 			;only other option is mexican

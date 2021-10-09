@@ -8,7 +8,7 @@
 )
 
 (defun getValidComputerTrains (game)
-	(list t t (hasMarker (getHumanTrain game) ) )
+	(list t (hasMarker (getHumanTrain game) ) t )
 )
 
 (defun playComputerTurn (game validTrains)
