@@ -180,3 +180,19 @@
 			(cons (first lst) (reverseEach (rest lst) ) ) )
 	)
 )
+
+(defun openValidFile ()
+	(princ "Enter a valid filename to open") (terpri)
+	(let* (
+		(input (read-line) )
+		(path (make-pathname :directory "lisp" :name input) )
+		)
+		(cond
+			( (null (probe-file path) )
+				(openValidFile ) )
+			( t
+				(open path) )
+		)
+		;(open  )
+	)
+)

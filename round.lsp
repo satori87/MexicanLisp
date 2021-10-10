@@ -38,6 +38,14 @@
 (defun isRoundOver (game)
 	;either hand is empty or (boneyard is empty + both players passed)
 	nil
+	(cond
+		( (null (getComputerHand game) )
+			t )
+		( (null (getHumanHand game) )
+			t )
+		( (and (null (getBoneyard game) ) (and (getComputerPassed game) (getHumanPassed game) ) )
+			t )
+	)
 )
 
 (defun endRound (game)

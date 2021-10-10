@@ -21,5 +21,11 @@
 )
 
 (defun printTop(boneyard)
-	(printListLn '" " (list (first boneyard) ) )
+	(cond
+		( (null boneyard)
+			(princ 'EMPTY) )
+		( t
+			(format t "~d" (first boneyard) ) )
+	)
+	(terpri)
 )

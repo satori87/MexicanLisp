@@ -47,11 +47,7 @@
 )
 
 (defun loadGame ()
-	(princ "Enter a valid filename") (terpri)
-	(let* (
-		(input (read-line) )
-		(ins (open (make-pathname :directory "lisp" :name input) ) )
-		)
+	(let ( (ins (openValidFile) ) )
 		(cond 
 			( (null ins)
 				(loadGame) )
