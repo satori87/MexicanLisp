@@ -27,7 +27,7 @@
 
 (defun newGame ()
 	(princ "Starting New Game") (terpri)
-	(playGame (startRound (list 1 0 () () 0 () () () () () () ) ) )
+	(playGame (startRound (list 1 0 () () 0 () () () () () (list () () ) ) ) )
 )
 
 (defun playGame (game)

@@ -1,3 +1,13 @@
+;     ************************************************************
+;     * Name:  Michael Whitlock                                  *
+;     * Project:  Mexican Train (LISP)                           *
+;     * Class:  OPL Fall 2021                                    *
+;     * Date:  10/10/21                                          *
+;     ************************************************************
+;
+;     serialize.lsp handles all functions related to encoding game state
+;	as well as function save entire game state to file
+;
 
 (defun setRoundNumber (game roundNumber)
 	(setNth 1 game roundNumber)
@@ -50,6 +60,9 @@
 (defun saveGame (game)
 	;gotta remove the engine from the mexican train
 	;and remove the 11th element (playerPassed) from game
-	(princ "Put save here") (terpri)
+	(let ( (outs (openFileForSave) ) )
+		(write (allButLast (setComputerTrain game (reverseEach (reverseList (getComputerTrain game) ) ) ) ) :stream outs )
+		(close outs)
+	)
 	(quit)
 )

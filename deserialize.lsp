@@ -1,3 +1,16 @@
+;     ************************************************************
+;     * Name:  Michael Whitlock                                  *
+;     * Project:  Mexican Train (LISP)                           *
+;     * Class:  OPL Fall 2021                                    *
+;     * Date:  10/10/21                                          *
+;     ************************************************************
+;
+;     deserialize.lsp holds functions related to breaking down the
+;	game object into its constituents. it also handles loading game
+;	from serialized file
+;
+
+
 (defun getRoundNumber (game)
 	(getNth 1 game)
 )
@@ -53,7 +66,7 @@
 				(loadGame) )
 			( t
 				; now to add 11th element and to reverse computerTrain, also reverse each tile!
-				(let ( (game (append (read ins) (list () ) ) ) )					
+				(let ( (game (append (read ins) (list (list () () ) ) ) ) )					
 					(setComputerTrain game (reverseEach (reverseList (getComputerTrain game) ) ) )
 				) )
 		)

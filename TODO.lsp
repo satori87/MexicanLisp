@@ -1,6 +1,5 @@
 LAST THINGS TO IMPLEMENT
 
-5. Handle invalid filename
 6. Saving (dont forget to remove the 11th element and put computer train back the way it belongs)
 
 

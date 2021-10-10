@@ -31,13 +31,12 @@
 		( (equal (getNextPlayer game) 'Human )
 			(playRound (takeHumanTurn game) ) )
 		( t
-			(format t "Fatal Error0 ~d" game) (quit) )
+			(format t "Fatal Error in playRound. GAMESTATE: ~d" game) (quit) )
 	)
 )
 
 (defun isRoundOver (game)
 	;either hand is empty or (boneyard is empty + both players passed)
-	nil
 	(cond
 		( (null (getComputerHand game) )
 			t )
@@ -45,6 +44,8 @@
 			t )
 		( (and (null (getBoneyard game) ) (and (getComputerPassed game) (getHumanPassed game) ) )
 			t )
+		(t
+			nil )
 	)
 )
 
@@ -58,7 +59,7 @@
 	(printListLn '"Computer Hand  : " (getComputerHand game) ) 
 	(printListLn '"Human Hand     : " (getHumanHand game) )
 	(printList '"Player Trains  : " (reverseEach (reverseList (rest (getComputerTrain game) ) ) ) )
-	(format t "**~d**" (getEngine (getRoundNumber game) ) )
+	(format t "<-*~d*->" (getEngine (getRoundNumber game) ) )
 	(printListLn '"" (rest (getHumanTrain game) ) )
 	(printListLn '"Mexican Train  : " (getMexicanTrain game) )
 	(format t   '"Boneyard (~2,'0d)  :" (getListLength (getBoneyard game) ) )
