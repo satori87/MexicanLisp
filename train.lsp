@@ -125,12 +125,18 @@
 ; Function Name: getEndValue
 ; Purpose: Returns the number of pips at the end of the train. e.g., the side of the last
 ;			tile that faces away from the rest of the train
-; Parameters: left to right oriented train
-; Algorithm: get the last value of the last value, results in the end of the train
+; Parameters: the engine, left to right oriented train
+; Algorithm: get the last value of the last value, results in the end of the train.
+;				if train is empty, use the engine
 ; Return Value: number of pips at end of train
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun getEndValue (train)
-	(getLast (getLast (remMarker train) ) )
+(defun getEndValue (game train)
+	(cond
+		( (null train)
+			(first (getEngine (getRoundNumber game) ) ) )
+		( t
+			(getLast (getLast (remMarker train) ) ) )
+	)
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -192,16 +198,25 @@
 	(cond
 		( (null train) 
 			(canPlayTileToTrain game (list (getEngine (getRoundNumber game) ) ) tile) )
-		( (= (getEndValue train ) (first tile) )
+		( (= (getEndValue game train ) (first tile) )
 			t )
-		( (= (getEndValue train ) (getLast tile) )
+		( (= (getEndValue game train ) (getLast tile) )
 			t )
 		( t
 			nil )
 	)
 )
 
-;returns list of (game tilePlayed trainNumberPlayed)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: finalizePlay
+; Purpose: finalizing a play encompasses:
+;				removing marker if player players to their own train
+;				creating a list of the modified game object and the tile played
+;				to return up the chain
+; Parameters: the game object, train number, tile, and player number
+; Algorithm: If train number equals player number, remove marker before forming list
+; Return Value: list of (modfifiedGame tilePlayed)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun finalizePlay (game trainNumber train tile playerNumber)
 	;now just pick the right train to set
 	(cond
@@ -224,21 +239,29 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: playTileToTrain
+; Purpose: plays the tile to the train and then finalizes the play
+; Parameters: game object, train number (1-3), tile, player number (1-3)
+; Algorithm: 	first, make note of whether or not train has marker
+;				check which way to add file (if it needs flipping), 
+;				remove marker from train
+;				add tile to train
+;				reset marker status with set marker
+;				pass info into finalizePlay
+; Return Value: the finalized play e.g. list of (game tilePlayed)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun playTileToTrain (game trainNumber tile playerNumber)
 	(let* ( (train (getTrain game trainNumber) )
 			(marker (hasMarker train) )
 		  )
 		(cond
-			( (equal (getEndValue train) (first tile) )
+			( (equal (getEndValue game train) (first tile) )
 				(finalizePlay game trainNumber (setMarker (append (remMarker train) (list tile) ) marker) tile playerNumber) )
-			( (equal (getEndValue train) (first (rest tile) ) )
-				(finalizePlay game trainNumber (setMarker (append (remMarker train) (list (reverseList tile) ) ) marker) (reverseList tile) playerNumber) )
-			( (and (= trainNumber 3) (= (first tile) (first (getEngine (getRoundNumber game) ) ) ) )
-				(finalizePlay game trainNumber (setMarker (append (remMarker train) (list tile) ) marker) tile playerNumber) )
-			( (and (= trainNumber 3) (= (first (rest tile) ) (first (getEngine (getRoundNumber game) ) ) ) )
+			( (equal (getEndValue game train) (getLast tile ) )
 				(finalizePlay game trainNumber (setMarker (append (remMarker train) (list (reverseList tile) ) ) marker) (reverseList tile) playerNumber) )
 			( t
-				(format t "Fatal error in playTileToTrain. ~d ~d ~d ~d ~d" game (getEndValue Train) tile trainNumber playerNumber) (terpri)
+				(format t "Fatal error in playTileToTrain. ~d ~d ~d ~d" game trainNumber tile playerNumber) (terpri)
 				(quit) )
 		)	
 	)
