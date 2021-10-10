@@ -1,3 +1,23 @@
+;     ************************************************************
+;     * Name:  Michael Whitlock                                  *
+;     * Project:  Mexican Train (LISP)                           *
+;     * Class:  OPL Fall 2021                                    *
+;     * Date:  10/10/21                                          *
+;     ************************************************************
+;
+;     round.lsp contains all functions pertaining to Round
+;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: startRound
+; Purpose: Sets up a new round. This entails starting with a freshly shuffled boneyard,
+;			removing the engine, distributing 16 tiles to each player, putting the engine
+;			on each player train, determining first player, and announcing the start of the round
+; Parameters: partially formed game object in new of new round stuff
+; Algorithm: Call startRound recursively, checking off the requirements one by one,
+;				ultimately returning the game object with fresh round
+; Return Value: 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun startRound (game)
 	(cond
 		( (null (getBoneyard game) )
@@ -21,6 +41,15 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: playRound
+; Purpose: iterates recursively, first checking if round is over, then checking whose
+; turn it is and executing it.			
+; Parameters: game object
+; Algorithm: First checks if round is over. If not, executes the players turn indicated
+;			by getNextPlayer. 
+; Return Value: In the end this returns the final game state to playGame
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun playRound (game)
 	(printRound game)
 	(cond 
@@ -35,6 +64,14 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: isRoundOver
+; Purpose: Determines if round is over
+; Parameters: game object
+; Algorithm: Check if computer hand is empty, player hand is empty.
+;				If neither, check if boneyard is empty and both players passed
+; Return Value: t or nil
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun isRoundOver (game)
 	;either hand is empty or (boneyard is empty + both players passed)
 	(cond
@@ -49,11 +86,32 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: endRound
+; Purpose: Announces end of round
+; Parameters: game object
+; Algorithm:
+; Return Value: the unmodified game object
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun endRound (game)
 	(format t "Round ~d over! Tallying scores" (getRoundNumber game) ) (terpri)
 	game
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: printRound
+; Purpose: print all info of the round state
+; Parameters: game object
+; Algorithm: Print round number, player scores
+;			Print Computer, Human hands
+;			Print Player Trains (have to mirror computer train as all trains are
+;			stored left-to-right during gameplay.
+;			Print Mexican Train
+;			Print boneyard
+;			Print whose turn it is
+;			Print who passed their last turn
+; Return Value: N/A
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun printRound (game)
 	(format t "Round ~d | Computer Score: ~d | Human Score: ~d" (getRoundNumber game) (getComputerScore game) (getHumanScore game) ) (terpri)
 	(printListLn '"Computer Hand  : " (getComputerHand game) ) 
@@ -75,6 +133,14 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: getEngine
+; Purpose: Returns a tile representing the engine of the round
+; Parameters: round number
+; Algorithm: an engine is a double tile of n, where n is the 9 minus (modulus of the round number
+;				minus 1)
+; Return Value: tile representing engine of round
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun getEngine (roundNumber)
 	(let (
 		( engineHalf (- 9 (- (mod roundNumber 10) 1)) ) )
@@ -82,6 +148,14 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: determineFirstPlayer
+; Purpose: Determines first player of a new round
+; Parameters: computer score, human score
+; Algorithm: If scores are equal (or both 0), do a coin toss
+;				otherwise, lower score goes first
+; Return Value: symbol representing player who goes first
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun determineFirstPlayer (computerScore humanScore)
 	(cond
 		( (= computerScore humanScore )
@@ -93,6 +167,14 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: coinToss
+; Purpose: Performs a coin toss to see who goes first
+; Parameters: N/A
+; Algorithm: Prompts player for 1 or 2 to "call the toss", but really just
+;			Uses a 50/50 random number, player cant tell difference
+; Return Value: symbol representing player who goes first
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun coinToss ()
 	(getValidNumber 1 2 "Human player call (1) Heads or (2) Tails")
 	(cond

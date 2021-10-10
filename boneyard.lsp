@@ -1,3 +1,13 @@
+;     ************************************************************
+;     * Name:  Michael Whitlock                                  *
+;     * Project:  Mexican Train (LISP)                           *
+;     * Class:  OPL Fall 2021                                    *
+;     * Date:  10/10/21                                          *
+;     ************************************************************
+;
+;     boneyard.lsp contains all functions related to boneyard
+;
+
 (defun rawBoneyard ()
 	;Full 55-tile double-9 set
 	;it is shuffed for normal play, but also has point priority pre-baked in
