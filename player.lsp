@@ -103,6 +103,13 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: canPlayTileAnyWhere
+; Purpose: Returns t if given tile is playable on any train
+; Parameters: game object, tile, list of valid trains
+; Algorithm: check each train against this tile 1 by 1 with simple call to canPlayTileToTrain
+; Return Value: t or nil
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun canPlayTileAnywhere (game tile validTrains)
 	(cond
 		( (and (getNth 1 validTrains) (canPlayTileToTrain game (getComputerTrain game) tile) )
@@ -116,6 +123,13 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: getHand
+; Purpose: Returns hand for specified player number 1 or 2
+; Parameters: game object, player number
+; Algorithm: 
+; Return Value: the corresponding hand
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun getHand (game playerNumber)
 	(cond
 		( (= playerNumber 1)
@@ -125,6 +139,13 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: playerHasMarker
+; Purpose: Returns whether or not given players train has a marker
+; Parameters: game object, player number
+; Algorithm: 
+; Return Value: t or nil
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun playerHasMarker (game playerNumber)
 	(hasMarker (getTrain game playerNumber) )
 )
