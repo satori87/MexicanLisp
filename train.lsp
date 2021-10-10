@@ -133,6 +133,13 @@
 	(getLast (getLast (remMarker train) ) )
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: getTrainName
+; Purpose: Returns the name of the train for given train number
+; Parameters: trainNumber 1 2 or 3
+; Algorithm: 
+; Return Value: Text or Error
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun getTrainName (trainNumber)
 	(cond
 		( (= trainNumber 1)
@@ -150,6 +157,16 @@
 ;					TRAIN FUNCTIONS RELATED TO PLAYING TILES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: canPlayHandToTrain
+; Purpose: Returns whether or not the specified hand contains at least one valid tile
+;			playable against specified train. only checks legality of play,
+;			 without considering rest of the table
+; Parameters: game object, a left-to-right train, a player hand
+; Algorithm: iterate recursively through hand, trying each tile with
+;				canPlayTileToTrain
+; Return Value: t if hand has at least 1 playable tile, otherwise nil
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun canPlayHandToTrain (game train hand)
 	(cond
 		( (null hand)
@@ -161,6 +178,15 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: canPlayTileToTrain
+; Purpose: Returns whether or not this tile can legally be played to this train
+; Parameters: the game object, the specified train, the specified tile
+; Algorithm: If train is null, return nil
+;				if either side of the tile matches the end value of the train, return t
+;				otherwise, nil
+; Return Value: t or nil
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun canPlayTileToTrain (game train tile)
 	;if either of the values in tile matches the LAST value in train, return true
 	(cond
