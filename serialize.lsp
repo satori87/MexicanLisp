@@ -10,11 +10,12 @@
 ;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; Function Name: 
-; Purpose: 
-; Parameters: 
-; Algorithm: 
-; Return Value: 
+; Function Name: saveGame
+; Purpose: process the game object for saving, obtain a pathname to save to, and save
+; Parameters: the game object, still containing 11th element and mirrored computer train
+; Algorithm: obtain valid pathname, open stream for write, mirror computer train to match
+;			serialization file standard, and also trim the 11th element not found in files
+; Return Value: QUITS after saving
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun saveGame (game)
 	;gotta remove the engine from the mexican train
