@@ -142,10 +142,14 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Function Name: promptForMove
-; Purpose: 
-; Parameters: 
-; Algorithm: 
-; Return Value: 
+; Purpose: prompt human for a valid move and execute it
+; Parameters: game object, valid trains
+; Algorithm: obtain valid train input
+;			obtain valid tile input
+;			if tile input is a 1 (they asked to go back), repeat recursively
+;			if the specified tile can legally be played to the specified train, do so
+;			otherwise, recursively repeat
+; Return Value: the altered game object
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun promptForMove (game validTrains)
 	(let (
@@ -163,8 +167,15 @@
 	)
 )
 
-;return 1 2 3 for C H M
-; so long as that nth is t
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: getValidTrainInput
+; Purpose: prompts human to play on 1 2 or 3 train, or 4 to ask for help
+; Parameters: game object, valid trains
+; Algorithm: obtain a number 1-4 from console. If 4, display advice, otherwise
+;				check train input against valid trains
+;				if it checks out, return the input, otherwise recursively repeat
+; Return Value: a valid number 1, 2, or 3 that is valid according to validTrains
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun getValidTrainInput (game validTrains)
 	(let ( (input (getValidNumber 1 4 "Enter a number for (1) Computer Train (2) Human Train or (3) Mexican Train or (4) for *HELP*") ) )
 		(cond
@@ -180,7 +191,14 @@
 	)
 )
 
-;Return an actual tile
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: getLegalTileInput
+; Purpose: gets a tile input from human that is not only a valid tile, it is also in
+;				in their hand
+; Parameters: a hand
+; Algorithm: obtain a valid tile from console, look for it in hand
+; Return Value: a tile contained in hand
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun getLegalTileInput (hand)	
 	(let ( (tile (getValidTileInput) ) )
 		(cond
@@ -196,8 +214,14 @@
 	)
 )
 
-; returns a valid formed tile
-; e.g. list of 2 numbers 1-9
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: getValidTileInput
+; Purpose: Obtains a validly formed tile e.g. 2 numbers between 0 and 9. Must be a tile
+;			in the 55 tile double 9 set
+; Parameters:  N/A
+; Algorithm: Obtain console input and validate it with a series of bound checks
+; Return Value: a double 9 tile
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun getValidTileInput ()
 	(princ "Enter a valid tile in your hand. Usage: (# #) or enter (1) to go back") (terpri)
 	(let ( (tile (read) ) )
