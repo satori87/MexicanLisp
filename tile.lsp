@@ -1,7 +1,31 @@
+;     ************************************************************
+;     * Name:  Michael Whitlock                                  *
+;     * Project:  Mexican Train (LISP)                           *
+;     * Class:  OPL Fall 2021                                    *
+;     * Date:  10/10/21                                          *
+;     ************************************************************
+;
+;     tile.lsp has a few functions relevant to tiles specifically
+;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: getTileValue
+; Purpose: returns the total pip count of a domino tile e.g. list of 2 integers
+; Parameters: tile e.g. list of 2 integers
+; Algorithm: add the first and second elements together
+; Return Value: sum of elements of this list of 2 integers aka tile
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun getTileValue (tile)
 	(+ (first tile) (getNth 2 tile) )
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: isDouble
+; Purpose: returns whether or not this tile is a double
+; Parameters: tile to examine
+; Algorithm: if first and second element are equal, this tile is a double
+; Return Value: t or nil
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun isDouble (tile)
 	(cond
 		( (null tile)
