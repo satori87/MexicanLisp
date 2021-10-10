@@ -1,24 +1,51 @@
+;     ************************************************************
+;     * Name:  Michael Whitlock                                  *
+;     * Project:  Mexican Train (LISP)                           *
+;     * Class:  OPL Fall 2021                                    *
+;     * Date:  10/10/21                                          *
+;     ************************************************************
+;
+;     human.lsp contains all functions unique to human player
+;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: takeHumanTurn
+; Purpose: Prompt for option to save game or execute human turn
+; Parameters:  game object
+; Algorithm: Obtain valid number 1-2, 1 for save, 2 to take turn
+; Return Value: the modified game object after turn is complete
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun takeHumanTurn (game)
 	(cond
 		( (equal (getValidNumber 1 2 "(1) Save (2) Start Turn") 1)
 			(saveGame game) )
 		( t
-			(playHumanTurn game (getValidTrains game (getValidHumanTrains game) ) ) )
+			(makeHumanMoves game (getValidTrains game (getValidHumanTrains game) ) 0 ) )
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: getValidHumanTrains
+; Purpose: Returns the list of trains eligible for human to player on (not accounting
+;			for orphans)
+; Parameters: game object
+; Algorithm: own train and mexican train are always t, computer train is t if it has a marker
+; Return Value: list of 3 booleans representring train validity
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun getValidHumanTrains (game)
 	(list (hasMarker (getComputerTrain game) ) t t)
 )
 
-(defun playHumanTurn (game validTrains)
-	;valid trains represents the valid trains to play on
-	;this turn. for the entire rest of turn these are 
-	(makeHumanMoves game validTrains 0)
-)
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: makeHumanMoves
+; Purpose: Executes recursively until human has played 3 tiles or has no moves. 
+;			Then ends turn gracefully or passes turn
+; Parameters: game object, valid trains, the number of tiles played this turn
+; Algorithm: if 3 tiles have been played, triumphantly end turn with no room
+;				for passing. if no valid moves are left, pass the turn
+; Return Value: the modified game object
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun makeHumanMoves (game validTrains tilesPlayed)
-	(printlistLn '"Playable Trains: " validTrains )
 	(cond
 		( (= tilesPlayed 3)
 			(endTurn game tilesPlayed) ) ; return game to go all the way back up to playRound
@@ -29,6 +56,19 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: makeHumanMove
+; Purpose: Makes an individual move for the human. Only called when a legal move
+;			exists. Guaranteed to find one
+; Parameters: game object, valid trains, number of tiles played (so it can be passed 
+;				recursively to makeHumanMoves)
+; Algorithm: obtain a moveResult from promptForMove
+;				extract the tile played and the new game state from the result
+;				remove the played tile from hand
+;				If tile is double, continue to play via recursion
+;				Otherwise, end turn
+; Return Value: the altered game state
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun makeHumanMove (game validTrains tilesPlayed)
 	(let* ( 
 		(moveResult (promptForMove game validTrains) )
@@ -44,13 +84,15 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: humanPass
+; Purpose: Human passes turn because it has no valid move to make. Is not called if
+;			3 tiles were played.
+; Parameters: game object, valid trains, number tiles played
+; Algorithm: If 0 tiles were played, attempt to draw a card. Otherwise, end turn
+; Return Value: the altered game state
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun humanPass (game validTrains tilesPlayed)
-	;announce
-	;if tilesplayed is 0 draw
-	;if drawn card, try to play
-	; if tilesplayed is still 0, set player passed on the 11th element
-	;in the end return the altered game object
-	; via endturn
 	(princ "Human passes turn.") (terpri)
 	(cond
 		( (= tilesPlayed 0)
@@ -60,6 +102,14 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: humanDraw
+; Purpose: Attempts to draw a card from boneyard. If successful, attempts to play it
+; Parameters: game object, valid trains
+; Algorithm: If boneyard is empty, end turn and report 0 tiles played
+;				Otherwise draw a card and immediately try to play it
+; Return Value: the altered game state
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun humanDraw (game validTrains)
 	(let ( (boneyard (getBoneyard game) ) )
 		(cond
@@ -71,6 +121,15 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: checkDraw
+; Purpose: Called after human draws a tile for passing. Continues turn if a valid move
+;			was created by drawing
+; Parameters: game object, valid trains
+; Algorithm: checks if the computer has a valid move, if so, makes it. otherwise, ends
+;				turn and reports 0 tiles played
+; Return Value: altered game state
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun checkDraw (game validTrains)
 	;simply check if the card we drew is playable. if so, re-enter the turn loop
 	(cond
@@ -81,6 +140,13 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: promptForMove
+; Purpose: 
+; Parameters: 
+; Algorithm: 
+; Return Value: 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun promptForMove (game validTrains)
 	(let (
 			(trainNumber (getValidTrainInput game validTrains) )
