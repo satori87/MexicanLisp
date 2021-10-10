@@ -224,6 +224,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun finalizePlay (game trainNumber train tile playerNumber)
 	(cond
+		( (= playerNumber 2)
+			;since human help doesnt result in automatic play, we need to announce the play
+			(format t "Human plays ~d to ~d" tile (getTrainName trainNumber) ) (terpri) )
+	)
+	(cond
 		( (= trainNumber 1)
 			(cond
 				( (= playerNumber 1)

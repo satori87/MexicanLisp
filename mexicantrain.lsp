@@ -1,5 +1,7 @@
 ;Load the other game files and start the game
-(defun mexicanTrain ()	
+(defun mexicanTrain ()
+	;setq is necesarry in order to set environment variable pretty-print to off
+	(setq *print-pretty* nil)
 	(loadModules)	
 	(initGame)
 	'"Thank you for playing. Goodbye."

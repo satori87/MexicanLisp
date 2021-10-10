@@ -109,7 +109,6 @@
 ;			Print Mexican Train
 ;			Print boneyard
 ;			Print whose turn it is
-;			Print who passed their last turn
 ; Return Value: N/A
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun printRound (game)
@@ -123,14 +122,6 @@
 	(format t   '"Boneyard (~2,'0d)  : " (getListLength (getBoneyard game) ) )
 	(printTop (getBoneyard game) )
 	(format t '"It is ~d's turn" (getNextPlayer game) ) (terpri)
-	(cond
-		( (getHumanPassed game)
-			(princ "Human passed last turn.") (terpri) )
-	)
-	(cond
-		( (getComputerPassed game)
-			(princ "Computer passed last turn.") (terpri) )
-	)
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
