@@ -35,6 +35,11 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: getPriorityTiles
+; Purpose: Simply returns a list of all the single tiles, in order of descending 
+;			total pip count
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun getPriorityTiles ()
 	;this helps to simplify AI logic. Simply iterate through this list and seeing if that tile 
 	;can be played anywhere. All other factors being equal (e.g. markers, doubles)

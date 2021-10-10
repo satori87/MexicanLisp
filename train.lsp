@@ -176,10 +176,13 @@
 (defun canPlayHandToTrain (game train hand)
 	(cond
 		( (null hand)
+			;no
 			() )
 		( (canPlayTileToTrain game train (first hand) )
+			;this tile can be played to the hand, return t
 			t )
 		( t
+			;this tile doesnt work, keep trying
 			(canPlayHandToTrain game train (rest hand) ) )
 	)
 )
@@ -197,6 +200,8 @@
 	;if either of the values in tile matches the LAST value in train, return true
 	(cond
 		( (null train) 
+			;mexican train is empty, so use knowledge of round inside game in order to
+			;simulate a train with the engine on it
 			(canPlayTileToTrain game (list (getEngine (getRoundNumber game) ) ) tile) )
 		( (= (getEndValue game train ) (first tile) )
 			t )
@@ -218,23 +223,27 @@
 ; Return Value: list of (modfifiedGame tilePlayed)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun finalizePlay (game trainNumber train tile playerNumber)
-	;now just pick the right train to set
 	(cond
 		( (= trainNumber 1)
 			(cond
 				( (= playerNumber 1)
+					;computer played to computer train, remove marker and return play
 					(list (setComputerTrain game (remMarker train) ) tile) )
 				(t
+					;human played to human train, return play
 					(list (setComputerTrain game train) tile) )
 			) )			
 		( (= trainNumber 2)
 			(cond
 				( (= playerNumber 2)
+					;human played to human train, remove marker and return play
 					(list (setHumanTrain game (remMarker train) ) tile) )
 				(t
+					;computer played to human train, return play
 					(list (setHumanTrain game train) tile) )
 			) )		
 		( (= trainNumber 3)
+			;play was to mexican train, return play
 			(list (setMexicanTrain game train) tile) )
 	)
 )
@@ -248,7 +257,8 @@
 ;				remove marker from train
 ;				add tile to train
 ;				reset marker status with set marker
-;				pass info into finalizePlay
+;				pass info into finalizePlay to remove personal marker
+;				and formulate our final return for the play
 ; Return Value: the finalized play e.g. list of (game tilePlayed)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun playTileToTrain (game trainNumber tile playerNumber)
@@ -257,8 +267,10 @@
 		  )
 		(cond
 			( (equal (getEndValue game train) (first tile) )
+				;no need to flip tile, add to train and put marker back if it was there
 				(finalizePlay game trainNumber (setMarker (append (remMarker train) (list tile) ) marker) tile playerNumber) )
 			( (equal (getEndValue game train) (getLast tile ) )
+				;flip tile before adding to train, then put marker back if it was there
 				(finalizePlay game trainNumber (setMarker (append (remMarker train) (list (reverseList tile) ) ) marker) (reverseList tile) playerNumber) )
 			( t
 				(format t "Fatal error in playTileToTrain. ~d ~d ~d ~d" game trainNumber tile playerNumber) (terpri)
