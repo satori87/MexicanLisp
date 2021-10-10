@@ -55,16 +55,27 @@
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; Function Name: 
-; Purpose: 
-; Parameters: 
-; Algorithm: 
-; Return Value: 
+; Function Name: remTile
+; Purpose: removes the specified tile from the specified hand
+; Parameters: hand, tile
+; Algorithm: Attempt to remove both the tile and its reverse
+;				Since double 9 set contains no duplicates, this is valid
+; Return Value: the hand without the tile in it
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun remTile (hand tile)
 	(remlist (remList hand tile) (reverseList tile) )
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: getValidTrains
+; Purpose: Returns a list of booleans corresponding to which trains will be legal
+;			to play to this turn with regards to Orphan doubles. If no orphan doubles
+;			exist, then the supplied playableTrains argument is returned
+; Parameters: game object, playableTrains
+; Algorithm: If any orphan doubles exist, return the list of trains with
+;				orphan doubles
+; Return Value: list of 3 booleans representing validity of computer, human, mexican trains
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun getValidTrains (game playableTrains)
 	(cond
 		( (isAnyOrphans game)
@@ -74,6 +85,15 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: hasValidMove
+; Purpose: Returns t or nil for whether or not the given hand can legally play to any
+;			of the specified validTrains
+; Parameters: game object, the player hand, eligible trains
+; Algorithm: iterate through entire hand recursively, checking each tile for playability
+;			return t if any are found
+; Return Value: t or nil
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun hasValidMove (game hand validTrains)
 	(cond
 		( (null hand)
