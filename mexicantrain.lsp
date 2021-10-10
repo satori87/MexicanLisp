@@ -5,6 +5,7 @@
 	'"Thank you for playing. Goodbye."
 )
 
+;load game modules
 (defun loadModules ()
 	(load "boneyard.lsp")
 	(load "utility.lsp")
