@@ -61,9 +61,9 @@
 ; Function Name: getNth
 ; Purpose: Returns the nth member of a list
 ; Parameters: 
-;		n: 		index of element to get
+;		n: 		index of element to get (1 for first)
 ;		lst:	list to get nth element of (assumed to be at least as large as n)
-; Algorithm: Iterate recrusively through list from, counting down n. When n is 0,
+; Algorithm: Iterate recrusively through list, counting down n. When n is 0,
 ;			the desired element is the first in the remaining list
 ; Return Value: The nth element of lst
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -76,6 +76,38 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: setNth
+; Purpose: Returns a list with its nth element modified
+; Parameters: 
+;		n: 		index of element to set (1 for first)
+;		lst:	list to set nth element of (assumed to be at least as large as n)
+;		item:	the item to put at nth position
+; Algorithm: Iterate recrusively through list, counting down n. When n is 0,
+;			the desired element is the first in the remaining list. The new element
+;			is inserted into the beginning of the rest of the list, which has the 
+;			elements already checked inserted in the beginning as the recursive chain
+;			ends
+; Return Value: the list lst with nth element set to item
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun setNth(n lst item)
+	(cond
+		( (<= n 1)
+			(cons item (rest lst) ) )
+		( t
+			(cons (first lst) (setNth (- n 1) (rest lst) item ) ) )
+	)
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: reverseList
+; Purpose: Simply returns lst reversed, with its members untouched
+; Parameters: 
+;		lst:	the list to reverse
+; Algorithm: Iterate through list recursively, appending first element to the end of
+;			new list
+; Return Value: lst, reversed
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun reverseList(lst)
 	(cond
 		( (null lst)
@@ -86,6 +118,20 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: remList
+; Purpose: Returns a list with the first instance of an item removed from it
+; Parameters: 
+;		lst:	the lst to remove item from
+;		item:	the item to remove from lst
+; Algorithm: Recursively iterate through list until end of list, or item is encountered
+;			equality is established with equal, not =, so this can be a more universal
+;			function. When the first instance is encountered, return the rest of the list
+;			without the item, and reconstruct the list with the already-checked items in front
+;			as recursion ends
+; Return Value: the list lst with first instance of item removed, if it exists
+;				otherwise, returns lst			
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun remList(lst item)
 	(cond
 		( (null lst)
@@ -97,20 +143,25 @@
 	)
 )
 
-(defun setNth(n lst item)
-	(cond
-		( (<= n 1)
-			(cons item (rest lst) ) )
-		( t
-			(cons (first lst) (setNth (- n 1) (rest lst) item ) ) )
-	)
-)
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: getListLength
+; Purpose: Returns the length of list
+; Parameters: lst: the List to count
+; Algorithm: Uses recursive counter to count list
+; Return Value: The length of list
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun getListLength(lst)
 	(listCounter 0 lst)
 )
 
-;for use with getListLength
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: listCounter
+; Purpose: To count a list with argument n
+; Parameters: n: the count so far, lst: the list
+; Algorithm: Increment n every recursive step until list is empty
+; Return Value: the length of list lst.
+; Usage: Start with initial outside call arguing n as 0 to get accurate results
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun listCounter(n lst)
 	(cond
 		( (null lst)
