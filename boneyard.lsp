@@ -11,15 +11,26 @@
 		(1 3) (0 3) (1 2) (0 2) (0 1) )
 )
 
+;Simply return a shuffled boneyard
 (defun newBoneyard()
 	(getShuffledList (rawBoneyard) )
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: addTileToHand
+; Purpose: Adds the top tile of boneyard to hand. Does NOT alter boneyard.
+;			This function makes assumptions that boneyard is NOT empty.
+;			The responsibility for checking is done elsewhere
+; Parameters: player name, hand, boneyard
+; Algorithm: the first element of boneyard is the top. Add it to hand and report.
+; Return Value: 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun addTileToHand(name hand boneyard)
 	(format t "~d drew a ~d from the boneyard" name (first boneyard) ) (terpri)
 	(append hand (list (first boneyard)) )
 )
 
+;Prints top of boneyard or EMPTY
 (defun printTop(boneyard)
 	(cond
 		( (null boneyard)
