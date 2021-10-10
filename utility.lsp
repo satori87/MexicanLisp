@@ -273,8 +273,7 @@
 ; Return Value: a pathname type formed by user input
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun inputPath ()
-	; To simplify for purposes of demonstration, C:/lisp was assumed
-	(make-pathname :directory "lisp" :name (read-line) )
+	(make-pathname :name (read-line) )
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

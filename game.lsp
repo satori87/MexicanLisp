@@ -35,10 +35,24 @@
 		( scores (tallyScores (playRound game) ) ) )
 		(cond
 			( (equal (getValidNumber 1 2 "Do you wish to keep playing? (1) Yes (2) No") 2)
-				() )
+				(announceWinner scores) )
 			( t
 				(playGame (nextRound scores game) ) )
 		)
+	)
+)
+
+(defun announceWinner (scores)
+	(cond
+		( (< (first scores) (getLast scores) )
+			;computer won
+			(princ "Computer Wins!!") (terpri) )
+		( (> (first scores) (getLast scores) )
+			;human won
+			(princ "Human Wins!!") (terpri) )
+		( t
+			;draw
+			(princ "Game is a draw! How anticlimactic.") (terpri) )
 	)
 )
 

@@ -1,12 +1,23 @@
-; STRATEGYaskforhelp
-;  play doubles above all else
-;  If marker on own train and can play to own train, do it
-;  otherwise, play highest single
+;     ************************************************************
+;     * Name:  Michael Whitlock                                  *
+;     * Project:  Mexican Train (LISP)                           *
+;     * Class:  OPL Fall 2021                                    *
+;     * Date:  10/10/21                                          *
+;     ************************************************************
+;
+;     help.lsp encompasses all of the modular functions related to
+;		AI choices for moving. Entry points are askForHelp and
+;		getComputerMove
+;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: askForHelp
+; Purpose: Serves as Human's entry point to the AI system. Prints best move for human player
+; Parameters: game object, list of valid trains to play on
+; Algorithm: Check if human has a valid move. If so, calculate and display it.
+; Return Value: N/A
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun askForHelp (game validTrains)
-	;iterate through raw boneyard, seeing if that tile is in hand
-	;if it is, call canPlayTileAnywhere
-	;if that returns true, pick the most optimal train for that tile
 	(cond
 		( (null (hasValidMove game (getHumanHand game) validTrains) )
 			(princ "You have no valid move.") (terpri) )
@@ -22,11 +33,15 @@
 	)
 )
 
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: getComputerMove
+; Purpose: Serves as Computer's entry point to the AI system. Prints and executes best
+;			move for computer player
+; Parameters: game object, list of valid trains
+; Algorithm: Check if computer has a valid move. If so, calculate, execute, and display it.
+; Return Value: the finalized play
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun getComputerMove (game validTrains)
-	;iterate through raw boneyard, seeing if that tile is in hand
-	;if it is, call canPlayTileAnywhere
-	;if that returns true, pick the most optimal train for that tile
 	(cond
 		( (null (hasValidMove game (getComputerHand game) validTrains) )
 			(princ "Computer has no valid move.") (terpri) )
@@ -43,6 +58,14 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: getMoveReason
+; Purpose: Produces text explanations of play justifications and displays them
+; Parameters: the game object, train number played to, tile played, player number who played
+; Algorithm: If tile is double, reason was that. If player has a marker and plays to own train
+;				the reason is that. Otherwise reason is because that was highest pip count tile
+; Return Value: N/A
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun getMoveReason (game trainNumber tile playerNumber)
 	(cond
 		( (isDouble tile)
@@ -54,8 +77,15 @@
 	)
 )
 
-;move this to player, its modular
-;use playernumber to determine which train is our own
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: getBestMove
+; Purpose: Returns advice on best move given the player number and valid trains
+; Parameters: game object, valid trains, player number playing
+; Algorithm: First, check if there is a best double
+;				if so, return it
+;			If not, move on to checking own train for marker
+; Return Value: The best move in form of advice
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun getBestMove (game validTrains playerNumber)
 	;first try to play doublz, otherewise move on to
 	;step 2, checkOwnTrainPriority, where we see if our
@@ -73,10 +103,16 @@
 	)
 )
 
-(defun checkPlayAgainstMarker (game validTrains playerNumber)
-	(and (and (playerHasMarker game playerNumber) (getNth playerNumber validTrains) ) (canPlayHandToTrain game (getHand game playerNumber) (getTrain game playerNumber) ) )
-)
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: checkOwnTrainPriority
+; Purpose: Check if players own train has a marker as well as both the means and the
+;			eligibility to play against it
+; Parameters: game object, valid trains list, player number
+; Algorithm: If player has a marker and ability to play against it, play the best possible
+;				single against it
+			;Otherwise, play the best possible single against whatever trains are available
+; Return Value: the best move in form of advice
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun checkOwnTrainPriority (game validTrains playerNumber)
 	;second step of AI priority chain: marker on own train
 	;if there is one, and can play to it, recommend to do so
@@ -91,15 +127,37 @@
 	)
 )
 
-;iterate down to 0 trying every double against your hand
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: checkPlayAgainstMarker
+; Purpose: Returns true if player has both a marker on their train and the ability to
+;			to play against it
+; Parameters: game object, valid trains, player number
+; Algorithm: return true IF player has marker on train AND players train is in valid
+; trains list AND player has a tile in their hand that can be played against their train
+; Return Value:  t or nil
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun checkPlayAgainstMarker (game validTrains playerNumber)
+	(and (and (playerHasMarker game playerNumber) (getNth playerNumber validTrains) ) (canPlayHandToTrain game (getHand game playerNumber) (getTrain game playerNumber) ) )
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: getBestDouble
+; Purpose: Find best doubles (descending order) to play againsrt valid trains. 
+;				If unable to find a double to play, return nil
+; Parameters: game object, valid trains player number
+;				n: the number of pips on either side of the double, starting from
+;				9 and going down to 0 (recursively)
+; Algorithm: If n is less than 0, no playable doubles were found
+;				If the players hand contains this double, return the best play for it
+;				Otherwise, try the next best double
+; Return Value: the best doubles play or NIL
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun getBestDouble (game validTrains playerNumber n)
 	(cond
-		( (= n 0)
+		( (< n 0)
 			() )
 		( (listContains (getHand game playerNumber) (list n n) )
 			(cond
-				( (= n 0)
-					() )
 				( (canPlayTileAnyWhere game (list n n) validTrains )
 					(getBestTrainForTile game (list n n) validTrains playerNumber) )
 				( t
@@ -110,11 +168,23 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: getBestSingle
+; Purpose: Returns the best singles play that can be made
+; Parameters: game object, valid trains, player number, list of tiles sorted by
+;				priority e.g. descending order
+; Algorithm:   Iterate recursively through the priorityTiles, removing one each
+;				step of the way. If the player has that tile and can play it, return
+;				the play. Since this function is only called afterno double is found,
+;				and hasValidMove returned t before that, then we are guaranteed to
+;				find a single to play
+; Return Value: A valid,  best single to play to the best possible train
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun getBestSingle (game validTrains playerNumber priorityTiles)
 	(cond
 		( (null priorityTiles)
 			;should be impossible but Just in case
-			(princ "Fatal getBestSingle ~d ~d ~d ~d" game validTrains playerNumber priorityTiles) )
+			(format "Fatal getBestSingle ~d ~d ~d ~d" game validTrains playerNumber priorityTiles) )
 		( (and (listContains (getHand game playerNumber) (first priorityTiles) ) (canPlayTileAnyWhere game (first priorityTiles) validTrains) )
 			(getBestTrainForTile game  (first priorityTiles) validTrains playerNumber) )
 		( t
@@ -122,10 +192,13 @@
 	)
 )
 
-(defun getValidTrainsForTile (game tile)
-	(list (canPlayTileToTrain game (getComputerTrain game) tile) (canPlayTileToTrain game (getHumanTrain game) tile) (canPlayTileToTrain game (getMexicanTrain game) tile) )
-)
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: getBestTrainForFile
+; Purpose: 
+; Parameters: 
+; Algorithm: 
+; Return Value: 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun getBestTrainForTile (game tile validTrains playerNumber)
 	;by this point any marker considerations are baked into
 	;valid trains. all we need to do here is try to play in the 

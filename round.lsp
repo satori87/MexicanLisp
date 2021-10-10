@@ -62,7 +62,7 @@
 	(format t "<-*~d*->" (getEngine (getRoundNumber game) ) )
 	(printListLn '"" (rest (getHumanTrain game) ) )
 	(printListLn '"Mexican Train  : " (getMexicanTrain game) )
-	(format t   '"Boneyard (~2,'0d)  :" (getListLength (getBoneyard game) ) )
+	(format t   '"Boneyard (~2,'0d)  : " (getListLength (getBoneyard game) ) )
 	(printTop (getBoneyard game) )
 	(format t '"It is ~d's turn" (getNextPlayer game) ) (terpri)
 	(cond
