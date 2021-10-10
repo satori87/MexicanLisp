@@ -171,7 +171,14 @@
 	)
 )
 
-;get last element of a list
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: getLast
+; Purpose: Returns last element of a list
+; Parameters: lst: the list
+; Algorithm: Recursively iterate through the list until rest is null, indicating last
+;	 		element. then return it.
+; Return Value: last element of lst
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun getLast(lst)
 	(cond
 		( (null (rest lst) )
@@ -181,7 +188,13 @@
 	)
 )
 
-;returns t or nil if the list contains the item
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: listContains
+; Purpose: Returns t or nil if lst contains at least once instance of item
+; Parameters: lst: the list, item: the item to search for
+; Algorithm: Recursively iterate through lst until item is found
+; Return Value: t if found, nil otherwise
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun listContains(lst item)
 	(cond
 		( (null lst)
@@ -194,12 +207,19 @@
 	)
 )
 
-; assumes lst and lst2 are same size
-; returns a list same size as lst with result of
-; lst[i] && lst2[i]
-; if lst2 is longer, it returns a list as long as
-; lst, containing the ANDs of the first n elements
-; of lst and lst2, where n is the length of lst
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: andList
+; Purpose: to get the result of two lists, ANDed together
+; Parameters: lst and lst2, two lists to AND together cell by cell
+; Algorithm: assumes lst and lst2 are same size
+; 			returns a list same size as lst with result of
+; 			lst[i] && lst2[i]
+; 			if lst2 is longer, it returns a list as long as
+; 			lst, containing the ANDs of the first n elements
+; 			of lst and lst2, where n is the length of lst
+; Return Value: a new list of length same as lst, containing the ANDed values of
+;				lst and corresponding (parallel) value of lst2
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun andList (lst lst2)
 	(cond
 		( (null lst)
@@ -210,13 +230,26 @@
 	)
 )
 
-; returns all but the last element of a list
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: allButLast
+; Purpose: Returns all but the Last element of a list
+; Parameters: lst, the list
+; Algorithm: Return first element 
+; Return Value: 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun allButLast (lst)
 	(reverseList (rest (reverseList lst) ) )
 )
 
-; doesnt reverse the list itself, but the order of the first nesting
-; of lists (non recursive)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: reverseEach
+; Purpose: returns new list with each element reversed. The order of elements is the same,
+;		but, assuming elements are also list, those lists are reversed. Can be combined with
+;		reverseList to mirror a list of lists perfectly
+; Parameters: lst
+; Algorithm: Iterate through list, reversing all elements along way while preversing order
+; Return Value: A list with all list sub-elements with their order reversed
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun reverseEach (lst)
 	(cond
 		( (null lst)
@@ -232,10 +265,26 @@
 ;						FILE/PATH UTILITY FUNCTIONS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: inputPath
+; Purpose: Obtain a path/file from the console
+; Parameters: N/A
+; Algorithm: Make a pathname out of the console input.
+; Return Value: a pathname type formed by user input
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun inputPath ()
+	; To simplify for purposes of demonstration, C:/lisp was assumed
 	(make-pathname :directory "lisp" :name (read-line) )
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: openValidFile
+; Purpose: To obtain and open a valid file from user input
+; Parameters: N/A
+; Algorithm: Use inputPath to obtain a pathname type, use probe-file
+;			to verify its integrity. Do not open until a valid file is found
+; Return Value: A stream resulting from successfully opening file
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun openValidFile ()
 	(princ "Enter a valid filename to open for load") (terpri)
 	(let ( (path (inputPath) ) )
@@ -248,6 +297,13 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: openFileForSave
+; Purpose: Obtains a pathname from user and opens stream for writing
+; Parameters: N/A
+; Algorithm: Open the path for output. If file exists already, remove existing file first
+; Return Value: Open stream for writing
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun openFileForSave ()
 	(princ "Enter a filename to open for save") (terpri)
 	(open (inputPath) :direction :output :if-exists :supersede)
@@ -257,6 +313,15 @@
 ;						LIST SHUFFLING FUNCTIONS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: getShuffledList, shuffleList
+; Purpose: Returns a shuffled copy of lst
+; Parameters: lst to shuffle
+; Algorithm:  Using length of lst, create a new list of numbers 1 through lst length,
+;				in random order. Then, use that list as indexes pointing to cells of
+;				rawBoneyard, to generate a new, shuffled list
+; Return Value: 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun getShuffledList(lst)
 	(shuffleList (getRandomOrder (getListLength lst) ) (rawBoneyard) )
 )
@@ -270,6 +335,13 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: getRandomOrder, randomOrder
+; Purpose: Create list of random numbers 1 through max, without duplicates
+; Parameters: max - number of elements
+; Algorithm: use getUnusedRandomIndex to iteratively fill the list
+; Return Value: list of random numbers 1 through max, without duplicates
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun getRandomOrder(max)
 	(randomOrder () max )
 )
@@ -284,7 +356,14 @@
 	)
 )
 
-;return a number 1-max not inside list
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: getUnusedRandomIndex
+; Purpose: return a number 1-max not inside list
+; Parameters: n: list counter, the list of random orders so far, max value
+; Algorithm: Simply generate random numbers between 1 and max, using recursive loop,
+;			 until one is generated that is not in the list. then return it.
+; Return Value: an integer between 1 and max that is not already found in order
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun getUnusedRandomIndex(n order max)
 	(let( ( rand (+ 1 (random max) ) ) )
 		(cond
@@ -300,16 +379,36 @@
 ;						NUMERIC INPUT FUNCTIONS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: getValidNumber
+; Purpose: Obtains a valid number between min and max from the user
+; Parameters: min value, max value, prompt to display
+; Return Value: a valid number between min and max
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun getValidNumber (min max prompt)
 	(princ prompt) (terpri)
 	(promptValidNumber min max)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: promptValidNumber
+; Purpose: prompt for valid number between min and max
+; Parameters: min value, max value
+; Algorithm: 
+; Return Value: a value user input between min and max
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun promptValidNumber (min max)
 	(format t "Please enter a number between ~d and ~d~%" min max)
 	(verifyNumberInRange min max (read) )
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: verifyNumberInRange
+; Purpose: verifies console input is a valid number between min and max
+; Parameters: min, max, console input
+; Algorithm: 
+; Return Value: a valid number between min and max
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun verifyNumberInRange(min max consoleInput)
 	(cond
 		( (equal (numberp consoleInput) () )
