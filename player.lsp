@@ -1,3 +1,21 @@
+;     ************************************************************
+;     * Name:  Michael Whitlock                                  *
+;     * Project:  Mexican Train (LISP)                           *
+;     * Class:  OPL Fall 2021                                    *
+;     * Date:  10/10/21                                          *
+;     ************************************************************
+;
+;     player.lsp contains all functions universal to both players
+;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: endTurn
+; Purpose: ends the players turn, announcing so and adjusting the player passed data
+;			as necesarry, as well as placing marker if turn is passed without playing tile
+; Parameters: game object, number of tiles played
+; Algorithm: 
+; Return Value: 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun endTurn (game tilesPlayed)
 	(cond
 		( (equal (getNextPlayer game) 'Computer)
