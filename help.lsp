@@ -194,22 +194,21 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Function Name: getBestTrainForFile
-; Purpose: 
-; Parameters: 
-; Algorithm: 
-; Return Value: 
+; Purpose: After an ideal tile is picked, it may or may not be playable to more than
+;			one train. This function returns a play on the best possible one
+; Parameters: game object, tile to play, valid trains, player number
+; Algorithm: if player has marker and they can play against it with this tile, thats
+;					highest priority.
+;			next it is checked against players own train
+;			next it is checked against opponents train
+;			lastly, it is assumed it must be played to mexican train
+; Return Value: a list of (trainNumber tile)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun getBestTrainForTile (game tile validTrains playerNumber)
-	;by this point any marker considerations are baked into
-	;valid trains. all we need to do here is try to play in the 
-	; following order: opponent train, own train, mexican train
-	; keep in mind that we only know 
 	(cond
 		( (and (playerHasMarker game playerNumber) (and (getNth playerNumber validTrains) (canPlayTileToTrain game (getTrain game playerNumber) tile) ) )
 			;we can play this tile to our own marked train, so do it
 				(list playerNumber tile) )
-		( (and (isDouble tile) (and (getNth (- 3 playerNumber) validTrains) (canPlayTileToTrain game (getTrain game (- 3 playerNumber) ) tile) ) )
-			(list (- 3 playerNumber) tile)  )
 		( (and (getNth playerNumber validTrains) (canPlayTileToTrain game (getTrain game playerNumber) tile) )
 			;next play on our own
 			(list playerNumber tile)  )
@@ -221,8 +220,16 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: canPlayHandToTrain
+; Purpose: simply return true if any tile in this hand can be legally played to this train
+; Parameters: game object, the hand, the train
+; Algorithm: If hand is empty, return nil
+;			If the first tile in hand can be played, return true
+;			Otherwise, iterate recursively until hand is empty
+; Return Value: t or nil
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun canPlayHandToTrain (game hand train)
-	;simply return true if any tile in this hand can be legally played to this train
 	(cond
 		( (null hand)
 			() )
