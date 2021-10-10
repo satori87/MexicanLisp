@@ -37,6 +37,14 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: tallyHand
+; Purpose: Adds up all pips in an entire hand and returns the number
+; Parameters: a hand
+; Algorithm: iterate through entire hand recursively, using getTileValue to get count of
+;			each tile
+; Return Value: pip count of entire hand as number
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun tallyHand (hand)
 	(cond 
 		( (null hand)
@@ -46,6 +54,13 @@
 	)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: 
+; Purpose: 
+; Parameters: 
+; Algorithm: 
+; Return Value: 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun remTile (hand tile)
 	(remlist (remList hand tile) (reverseList tile) )
 )
