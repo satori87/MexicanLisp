@@ -10,6 +10,36 @@
 ;	from serialized file
 ;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: loadGame
+; Purpose: Obtains a valid filename from user and loads the game state from it
+; Parameters: N/A
+; Algorithm: Once valid path is obtained and stream opened, the contents are read
+;			and processed slightly. For simplicity, computer train is fully mirrored,
+;			and an 11th element must be added to game list representing whether or not 
+;			computer and human players passed their turns
+; Return Value: the game object obtained from a valid file
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun loadGame ()
+	(let ( (ins (openValidFile) ) )
+		(cond 
+			( (null ins)
+				(loadGame) )
+			( t
+				; now to add 11th element and to reverse computerTrain, also reverse each tile!
+				(let ( (game (append (read ins) (list (list () () ) ) ) ) )					
+					(setComputerTrain game (reverseEach (reverseList (getComputerTrain game) ) ) )
+				) )
+		)
+	)
+)
+
+; The game object is ordered as follows:
+; roundNumber, computerScore, computerHand, computerTrain, humanScore, humanHand, humanTrain, mexicanTrain, boneyard, nextPlayer
+; an 11th element not found in file, playerPassed information, is a list of booleans representing whether computer or human passed
+; their last turn
+
+; these function simply abstract away from these numeric cell numbers
 
 (defun getRoundNumber (game)
 	(getNth 1 game)
@@ -57,20 +87,6 @@
 
 (defun getHumanPassed (game)
 	(getNth 2 (getNth 11 game) )
-)
-
-(defun loadGame ()
-	(let ( (ins (openValidFile) ) )
-		(cond 
-			( (null ins)
-				(loadGame) )
-			( t
-				; now to add 11th element and to reverse computerTrain, also reverse each tile!
-				(let ( (game (append (read ins) (list (list () () ) ) ) ) )					
-					(setComputerTrain game (reverseEach (reverseList (getComputerTrain game) ) ) )
-				) )
-		)
-	)
 )
 
 

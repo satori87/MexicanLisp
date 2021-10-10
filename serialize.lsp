@@ -9,6 +9,30 @@
 ;	as well as function save entire game state to file
 ;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Function Name: 
+; Purpose: 
+; Parameters: 
+; Algorithm: 
+; Return Value: 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun saveGame (game)
+	;gotta remove the engine from the mexican train
+	;and remove the 11th element (playerPassed) from game
+	(let ( (outs (openFileForSave) ) )
+		(write (allButLast (setComputerTrain game (reverseEach (reverseList (getComputerTrain game) ) ) ) ) :stream outs )
+		(close outs)
+	)
+	(quit)
+)
+
+; The game object is ordered as follows:
+; roundNumber, computerScore, computerHand, computerTrain, humanScore, humanHand, humanTrain, mexicanTrain, boneyard, nextPlayer
+; an 11th element not found in file, playerPassed information, is a list of booleans representing whether computer or human passed
+; their last turn
+
+; these function simply abstract away from these numeric cell numbers
+
 (defun setRoundNumber (game roundNumber)
 	(setNth 1 game roundNumber)
 )
@@ -55,14 +79,4 @@
 
 (defun setHumanPassed (game humanPassed)
 	(setNth 11 game (list (getNth 1 (getNth 11 game) ) humanPassed ) )
-)
-
-(defun saveGame (game)
-	;gotta remove the engine from the mexican train
-	;and remove the 11th element (playerPassed) from game
-	(let ( (outs (openFileForSave) ) )
-		(write (allButLast (setComputerTrain game (reverseEach (reverseList (getComputerTrain game) ) ) ) ) :stream outs )
-		(close outs)
-	)
-	(quit)
 )
