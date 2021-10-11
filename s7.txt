@@ -1,4 +1,0 @@
-			( (and (= trainNumber 3) (= (first tile) (first (getEngine (getRoundNumber game) ) ) ) )
-				(finalizePlay game trainNumber (setMarker (append (remMarker train) (list tile) ) marker) tile playerNumber) )
-			( (and (= trainNumber 3) (= (getLast tile) (first (getEngine (getRoundNumber game) ) ) ) )
-				(finalizePlay game trainNumber (setMarker (append (remMarker train) (list (reverseList tile) ) ) marker) (reverseList tile) playerNumber) )
